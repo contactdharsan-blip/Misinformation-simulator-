@@ -462,3 +462,4 @@ If you use this simulator in your research, please cite:
 5. Goel, S., et al. (2016). The structural virality of online diffusion. *Management Science*.
 # Misinformation-simulator-
 # Misinformation-simulator-
+# Misinformation-simulator-
