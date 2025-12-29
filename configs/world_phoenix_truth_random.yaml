@@ -1,0 +1,60 @@
+base: world_phoenix.yaml
+
+sim:
+  n_claims: 3  # 1 truth + 2 misinformation claims
+  snapshot_interval: 25  # Ensure snapshot at day 25
+
+strains:
+  # Truth claim - Based on Vosoughi et al. (2018): True news spreads 6x slower than false
+  # Truth is verifiable, spreads deliberately, and persists longer once adopted
+  - name: "official_health_guidance"
+    topic: "health_guidance"
+    memeticity: 0.25              # Lower memeticity: truth spreads slower (Vosoughi et al., 2018)
+    emotional_profile: 
+      fear: 0.05                   # Low fear: factual information
+      anger: 0.0                   # No anger: neutral tone
+      hope: 0.55                   # Moderate hope: positive framing
+    falsifiability: 1.0           # Fully verifiable (by definition)
+    stealth: 0.0                   # No stealth: transparent and open
+    mutation_rate: 0.0             # Truth doesn't mutate
+    violation_risk: 0.0            # No policy violations
+    is_true: true
+    virality: 0.17                # 1/6 of misinformation virality (6x slower spread)
+    persistence: 0.75             # High persistence: once adopted, truth persists (Walter et al., 2020)
+  
+  # Misinformation claim 1 - High-spread, fear-based misinformation
+  # - Vosoughi et al. (2018): False news spreads 6x faster, more novel, more emotional
+  # - Roozenbeek et al. (2020): 20-35% adoption rates
+  # - Guess et al. (2019): Higher emotional appeal (fear/anger)
+  - name: "economic_panic_misinformation"
+    topic: "economic_panic"
+    memeticity: 0.72              # High memeticity: highly shareable (Vosoughi et al., 2018)
+    emotional_profile: 
+      fear: 0.65                   # High fear: misinformation triggers anxiety (Brady et al., 2020)
+      anger: 0.45                  # Moderate-high anger: outrage drives sharing
+      hope: 0.15                   # Low hope: fear-based messaging
+    falsifiability: 0.35          # Low falsifiability: vague claims hard to debunk (Lewandowsky et al., 2012)
+    stealth: 0.55                 # High stealth: evades detection/moderation (Zannettou et al., 2018)
+    mutation_rate: 0.08           # Higher mutation: misinformation evolves rapidly (Zollo et al., 2015)
+    violation_risk: 0.40          # Moderate violation risk: some policy violations
+    is_true: false
+    virality: 1.0                 # Baseline virality (6x truth's 0.17 ≈ 1.0)
+    persistence: 0.25             # Lower persistence: beliefs fade faster without reinforcement
+  
+  # Misinformation claim 2 - Stealth misinformation with different characteristics
+  # Different topic, lower virality but higher stealth and persistence
+  # Represents conspiracy theories that spread slowly but persist longer
+  - name: "tech_conspiracy_misinformation"
+    topic: "tech_conspiracy"
+    memeticity: 0.58              # Moderate memeticity: less shareable than panic claims
+    emotional_profile:
+      fear: 0.40                   # Moderate fear: less panic-inducing
+      anger: 0.60                  # High anger: conspiracy theories trigger outrage
+      hope: 0.20                   # Low hope: negative framing
+    falsifiability: 0.25          # Very low falsifiability: unfalsifiable conspiracy claims
+    stealth: 0.70                 # Very high stealth: hard to detect and moderate
+    mutation_rate: 0.06           # Moderate mutation rate
+    violation_risk: 0.30          # Lower violation risk: more subtle
+    is_true: false
+    virality: 0.85                # Lower virality: spreads slower but more persistent
+    persistence: 0.45             # Higher persistence: conspiracy beliefs persist longer
