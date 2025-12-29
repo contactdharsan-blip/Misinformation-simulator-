@@ -461,3 +461,4 @@ If you use this simulator in your research, please cite:
 4. Vosoughi, S., Roy, D., & Aral, S. (2018). The spread of true and false news online. *Science*.
 5. Goel, S., et al. (2016). The structural virality of online diffusion. *Management Science*.
 # Misinformation-simulator-
+# Misinformation-simulator-
