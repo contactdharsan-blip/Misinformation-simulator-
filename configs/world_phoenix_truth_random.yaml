@@ -4,28 +4,18 @@ sim:
   n_claims: 2  # 1 truth + 1 misinformation
 
 strains:
-  # Truth claim - cannot be converted from once belief threshold is reached
+  # Truth claim - uses truth defaults + factual emotion preset
   - name: "official_health_guidance"
     topic: "health_guidance"
-    memeticity: 0.35
-    emotional_profile: {fear: 0.1, anger: 0.0, hope: 0.2}
-    falsifiability: 1.0
-    stealth: 0.0
-    mutation_rate: 0.0
-    violation_risk: 0.0
     is_true: true
-    virality: 0.6
-    persistence: 0.6
+    emotional_profile: "truth_factual"  # Uses preset: low fear, no anger, high hope
   
-  # Random misinformation claim (seed=42)
-  # Properties randomly generated to have appeal across different demographics
-  - name: "random_misinformation"
-    topic: "economic_panic"
-    memeticity: 0.66
-    emotional_profile: {fear: 0.23, anger: 0.33, hope: 0.30}
-    falsifiability: 0.41
-    stealth: 0.38
-    mutation_rate: 0.04
-    violation_risk: 0.45
-    virality: 1.17
-    persistence: 0.38
+  # Misinformation claim - randomly selects from 5 literature-based presets based on seed
+  # Presets: fear_panic, anger_outrage, balanced_negative, conspiracy, stealth_moderate
+  - name: "misinformation"
+    topic: "general"
+    is_true: false
+    emotional_profile: "random"  # Randomly selects preset based on sim.seed
+    # All other parameters use GENERAL_MISINFORMATION_DEFAULTS:
+    # memeticity: 0.70, virality: 1.0, falsifiability: 0.40, stealth: 0.55,
+    # mutation_rate: 0.06, violation_risk: 0.35, persistence: 0.25

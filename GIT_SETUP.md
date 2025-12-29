@@ -1,4 +1,4 @@
-dads# Git Repository Setup Guide
+# Git Repository Setup Guide
 
 Your git repository has been initialized! Here's what was done and next steps:
 

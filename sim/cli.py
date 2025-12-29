@@ -56,7 +56,7 @@ def override_config(cfg, args: argparse.Namespace) -> None:
     if args.seed is not None:
         cfg.sim.seed = args.seed
     if args.steps is not None:
-        cfg.sim.steps = args.steps
+        cfg.sim.n_steps = args.steps
     if args.n is not None:
         cfg.sim.n_agents = args.n
     if args.device is not None:
@@ -120,7 +120,7 @@ def run_dashboard(args: argparse.Namespace) -> None:
 def run_bench(args: argparse.Namespace) -> None:
     cfg = load_config(args.config)
     cfg.sim.seed = args.seed
-    cfg.sim.steps = args.steps
+    cfg.sim.n_steps = args.steps
     cfg.sim.n_agents = args.n
     cfg.sim.device = args.device
     cfg.output.save_plots = False

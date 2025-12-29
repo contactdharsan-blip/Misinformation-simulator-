@@ -216,7 +216,7 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
 
     prev_grad = torch.is_grad_enabled()
     torch.set_grad_enabled(False)
-    for day in range(cfg.sim.steps):
+    for day in range(cfg.sim.n_steps):
         strains = mutate_strains(strains, rng_manager.numpy)
 
         world_effective = cfg.world
@@ -352,7 +352,7 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
     metrics_df = pd.DataFrame(metrics_rows)
     snapshots_df = pd.concat(snapshots, ignore_index=True) if snapshots else pd.DataFrame()
 
-    summary = build_summary(metrics_df, cfg.sim.steps, cfg.world.intervention_day)
+    summary = build_summary(metrics_df, cfg.sim.n_steps, cfg.world.intervention_day)
 
     # Track strain names for plotting (initial strains, mutations tracked separately)
     initial_strain_names = [s.name for s in load_strains(cfg.strains)[:n_claims]]
