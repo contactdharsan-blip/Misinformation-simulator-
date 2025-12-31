@@ -21,6 +21,7 @@ def update_beliefs(
     reactance_enabled: bool,
     reactance: torch.Tensor,
     strains: list | None = None,
+    cultural_match: torch.Tensor | None = None,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """Vectorized belief update with decay, repetition, and corrections."""
     exposure_memory = cfg.exposure_memory_decay * exposure_memory + (1 - cfg.exposure_memory_decay) * exposure
@@ -32,6 +33,7 @@ def update_beliefs(
         + cfg.delta * social_proof
         - cfg.lambda_skepticism * skepticism.unsqueeze(1)
         - cfg.mu_debunk * debunk_pressure
+        + (cultural_match if cultural_match is not None else 0.0)
     )
 
     correction = debunk_pressure

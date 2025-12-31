@@ -1,0 +1,61 @@
+base: world_phoenix.yaml
+
+sim:
+  n_claims: 4  # 1 truth + 3 misinformation claims targeting different demographics
+  n_agents: 5000
+  n_steps: 50
+  seed: 42
+
+# Override strains to include both truth and misinformation
+strains:
+  # Truth claim - cannot be converted from once belief threshold is reached
+  - name: "official_health_guidance"
+    topic: "health_guidance"
+    memeticity: 0.35
+    emotional_profile: {fear: 0.1, anger: 0.0, hope: 0.6}
+    falsifiability: 1.0
+    stealth: 0.0
+    mutation_rate: 0.0
+    violation_risk: 0.0
+    is_true: true
+    virality: 0.6
+    persistence: 0.6
+  
+  # Misinformation targeting White demographic (high-income neighborhoods)
+  - name: "white_economic_anxiety"
+    topic: "economic_panic"
+    memeticity: 0.65
+    emotional_profile: {fear: 0.5, anger: 0.3, hope: 0.2}
+    falsifiability: 0.6
+    stealth: 0.45
+    mutation_rate: 0.04
+    violation_risk: 0.35
+    virality: 1.1
+    persistence: 0.3
+    is_true: false
+  
+  # Misinformation targeting Hispanic demographic (low-income neighborhoods)
+  - name: "hispanic_immigration_fear"
+    topic: "outsider_threat"
+    memeticity: 0.68
+    emotional_profile: {fear: 0.5, anger: 0.3, hope: 0.2}
+    falsifiability: 0.55
+    stealth: 0.5
+    mutation_rate: 0.04
+    violation_risk: 0.5
+    virality: 1.2
+    persistence: 0.35
+    is_true: false
+  
+  # Misinformation targeting Black demographic
+  - name: "black_systemic_injustice"
+    topic: "moral_spiral"
+    memeticity: 0.70
+    emotional_profile: {fear: 0.3, anger: 0.6, hope: 0.1}
+    falsifiability: 0.5
+    stealth: 0.5
+    mutation_rate: 0.05
+    violation_risk: 0.45
+    virality: 1.25
+    persistence: 0.4
+    is_true: false

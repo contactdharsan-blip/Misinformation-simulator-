@@ -1,0 +1,8 @@
+base: world_phoenix_with_misinfo.yaml
+
+sim:
+  snapshot_interval: 5  # Capture snapshots every 5 days to see spread
+  n_steps: 30  # Run for 30 days to see spread before truth protection
+
+town:
+  neighborhood_grid: [2, 3]  # Required for grid layout

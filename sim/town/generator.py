@@ -35,6 +35,7 @@ class Town:
     trust: Trust
     media_diet: MediaDiet
     ideology: np.ndarray
+    cultural_groups: np.ndarray  # Cultural group IDs (0=white, 1=hispanic, 2=black, 3=asian/other)
     networks: Dict[str, np.ndarray]
     aggregate_edges: Tuple[np.ndarray, np.ndarray, np.ndarray]
     neighbor_weight_sum: np.ndarray
@@ -160,8 +161,70 @@ def generate_town(
         # Update demographics with ethnicity
         demographics.ethnicity = ethnicity
     
-    traits = generate_traits(rng, n_agents, trait_cfg, world_cfg.emotions_enabled, ages)
-    trust = generate_trust(rng, n_agents, world_cfg)
+    # Assign cultural groups based on neighborhood cultural composition
+    cultural_groups = np.zeros(n_agents, dtype=np.int32)
+    if getattr(town_cfg, "neighborhood_specs", None) and len(neighborhood_ids) > 0:
+        specs = town_cfg.neighborhood_specs
+        for neighborhood_idx in range(len(specs)):
+            spec = specs[neighborhood_idx]
+            cultural_comp = spec.get("cultural_composition", [0.25, 0.25, 0.25, 0.25])  # Default equal distribution
+            if cultural_comp and len(cultural_comp) == 4:
+                # Get agents in this neighborhood
+                neighborhood_mask = neighborhood_ids == neighborhood_idx
+                n_in_neighborhood = neighborhood_mask.sum()
+                
+                if n_in_neighborhood > 0:
+                    # Normalize cultural composition probabilities
+                    comp_probs = np.array(cultural_comp, dtype=np.float32)
+                    comp_probs = comp_probs / comp_probs.sum()
+                    
+                    # Sample cultural groups for agents in this neighborhood
+                    sampled_groups = rng.choice(4, size=n_in_neighborhood, p=comp_probs)
+                    cultural_groups[neighborhood_mask] = sampled_groups
+    # If no neighborhood specs or cultural composition not provided, assign based on ethnicity
+    elif ethnicity is not None:
+        # Map ethnicity to cultural groups
+        ethnicity_to_group = {
+            'white': 0,
+            'hispanic': 1, 
+            'black': 2,
+            'asian': 3,
+            'other': 3  # Asian/other combined
+        }
+        for i in range(n_agents):
+            cultural_groups[i] = ethnicity_to_group.get(ethnicity[i], 0)
+    
+    # Extract neighborhood-specific parameters for trait/trust differentiation
+    neighborhood_education = None
+    neighborhood_income = None
+    if getattr(town_cfg, "neighborhood_specs", None) and len(neighborhood_ids) > 0:
+        specs = town_cfg.neighborhood_specs
+        neighborhood_education = {}
+        neighborhood_income = {}
+        for neighborhood_idx in range(len(specs)):
+            spec = specs[neighborhood_idx]
+            demos = spec.get("demographics", {})
+            # Extract education rate (college_educated fraction)
+            edu_rate = demos.get("college_educated")
+            if edu_rate is not None:
+                neighborhood_education[neighborhood_idx] = float(edu_rate)
+            # Extract median income
+            income = demos.get("median_income")
+            if income is not None:
+                neighborhood_income[neighborhood_idx] = float(income)
+    
+    traits = generate_traits(
+        rng, n_agents, trait_cfg, world_cfg.emotions_enabled, ages,
+        neighborhood_ids=neighborhood_ids if getattr(town_cfg, "neighborhood_specs", None) else None,
+        neighborhood_education=neighborhood_education,
+        neighborhood_income=neighborhood_income,
+    )
+    trust = generate_trust(
+        rng, n_agents, world_cfg,
+        neighborhood_ids=neighborhood_ids if getattr(town_cfg, "neighborhood_specs", None) else None,
+        neighborhood_income=neighborhood_income,
+        neighborhood_education=neighborhood_education,
+    )
     # Allow world-level media environment to influence media diet if provided
     media_env = getattr(world_cfg, "media_environment", None)
     media_diet = generate_media_diet(rng, n_agents, media_env)
@@ -194,6 +257,7 @@ def generate_town(
         trust=trust,
         media_diet=media_diet,
         ideology=ideology,
+        cultural_groups=cultural_groups,
         networks=networks,
         aggregate_edges=aggregate_edges,
         neighbor_weight_sum=neighbor_weight_sum,

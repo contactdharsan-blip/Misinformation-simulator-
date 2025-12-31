@@ -30,5 +30,7 @@ def test_belief_update_increases_with_exposure():
         cfg,
         False,
         reactance,
+        None,
+        None,
     )
     assert torch.all(updated > beliefs)

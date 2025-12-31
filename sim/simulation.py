@@ -12,6 +12,7 @@ import torch
 
 from sim.config import MetricsConfig, SimulationConfig
 from sim.disease.belief_update_torch import update_beliefs
+from sim.disease.strains import cultural_matching_bonus
 from sim.disease.exposure import (
     compute_institution_exposure,
     compute_social_exposure,
@@ -269,6 +270,12 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
             0.5 + traits["skepticism"].unsqueeze(1)
         ) * trust["trust_local_news"].unsqueeze(1)
 
+        # Calculate cultural matching bonus for identity-relevant strains
+        cultural_match = None
+        if strains is not None and hasattr(town, 'cultural_groups'):
+            cultural_groups_tensor = torch.tensor(town.cultural_groups, device=device, dtype=torch.long)
+            cultural_match = cultural_matching_bonus(strains, cultural_groups_tensor, device)
+
         beliefs, exposure_memory = update_beliefs(
             beliefs,
             total_exposure,
@@ -283,6 +290,7 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
             world_effective.reactance_enabled,
             traits["conflict_tolerance"],
             strains,
+            cultural_match,
         )
         
         # Track agents who have adopted truth (belief >= threshold)

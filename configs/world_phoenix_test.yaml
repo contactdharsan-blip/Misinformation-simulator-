@@ -1,0 +1,22 @@
+base: world_phoenix.yaml
+
+sim:
+  n_agents: 5000
+  n_steps: 50
+  n_claims: 1
+  seed: 42
+
+# Override strains to use a misinformation claim instead of truth
+strains:
+  # Use a misinformation claim that targets different demographics
+  - name: "white_economic_anxiety"
+    topic: "economic_panic"
+    memeticity: 0.65
+    emotional_profile: {fear: 0.5, anger: 0.3, hope: 0.2}
+    falsifiability: 0.6
+    stealth: 0.45
+    mutation_rate: 0.04
+    violation_risk: 0.35
+    virality: 1.1
+    persistence: 0.3
+    is_true: false

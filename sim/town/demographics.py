@@ -78,21 +78,51 @@ def generate_traits(
     traits: TraitConfig,
     emotions_enabled: bool,
     ages: Optional[np.ndarray] = None,
+    neighborhood_ids: Optional[np.ndarray] = None,
+    neighborhood_education: Optional[Dict[int, float]] = None,
+    neighborhood_income: Optional[Dict[int, float]] = None,
 ) -> Traits:
     personality = np.stack([
         _beta(rng, traits.personality.alpha, traits.personality.beta, n_agents)
         for _ in range(5)
     ], axis=1)
 
-    skepticism = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
+    # Base trait generation
+    skepticism_base = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
     need_for_closure = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
     conspiratorial_tendency = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
-    numeracy = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
+    numeracy_base = _beta(rng, traits.cognitive.alpha, traits.cognitive.beta, n_agents)
 
-    conformity = _beta(rng, traits.social.alpha, traits.social.beta, n_agents)
+    conformity_base = _beta(rng, traits.social.alpha, traits.social.beta, n_agents)
     status_seeking = _beta(rng, traits.social.alpha, traits.social.beta, n_agents)
     prosociality = _beta(rng, traits.social.alpha, traits.social.beta, n_agents)
     conflict_tolerance = _beta(rng, traits.social.alpha, traits.social.beta, n_agents)
+    
+    # Apply neighborhood-specific adjustments if available
+    skepticism = skepticism_base.copy()
+    numeracy = numeracy_base.copy()
+    conformity = conformity_base.copy()
+    
+    if neighborhood_ids is not None and neighborhood_education is not None:
+        # Higher education → higher skepticism and numeracy, lower conspiratorial tendency
+        for nid, edu_rate in neighborhood_education.items():
+            mask = neighborhood_ids == nid
+            if mask.any():
+                # Education effect: +0.15 skepticism, +0.2 numeracy for high education neighborhoods
+                edu_effect = (edu_rate - 0.3) / 0.5  # Normalize: 0.3 (low) to 0.8 (high) -> -1 to +1
+                skepticism[mask] = np.clip(skepticism[mask] + 0.15 * edu_effect, 0.0, 1.0)
+                numeracy[mask] = np.clip(numeracy[mask] + 0.2 * edu_effect, 0.0, 1.0)
+                conspiratorial_tendency[mask] = np.clip(conspiratorial_tendency[mask] - 0.15 * edu_effect, 0.0, 1.0)
+    
+    if neighborhood_ids is not None and neighborhood_income is not None:
+        # Higher income → lower conformity (more independent thinking)
+        for nid, income in neighborhood_income.items():
+            mask = neighborhood_ids == nid
+            if mask.any():
+                # Income effect: normalize income (e.g., 30k-110k range) and adjust conformity
+                income_normalized = (income - 30000) / 80000  # Rough normalization
+                income_normalized = np.clip(income_normalized, 0.0, 1.0)
+                conformity[mask] = np.clip(conformity[mask] - 0.2 * (income_normalized - 0.5), 0.0, 1.0)
 
     emotions = {}
     if emotions_enabled:
@@ -135,18 +165,53 @@ def generate_trust(
     rng: np.random.Generator,
     n_agents: int,
     world: WorldConfig,
+    neighborhood_ids: Optional[np.ndarray] = None,
+    neighborhood_income: Optional[Dict[int, float]] = None,
+    neighborhood_education: Optional[Dict[int, float]] = None,
 ) -> Trust:
-    def jitter(base: float) -> np.ndarray:
-        vals = rng.normal(loc=base, scale=world.trust_variance, size=n_agents)
+    def jitter(base: float, size: int) -> np.ndarray:
+        vals = rng.normal(loc=base, scale=world.trust_variance, size=size)
         return np.clip(vals, 0.0, 1.0).astype(np.float32)
+    
+    # Base trust values with jitter
+    trust_gov = jitter(world.trust_baselines["gov"], n_agents)
+    trust_church = jitter(world.trust_baselines["church"], n_agents)
+    trust_local_news = jitter(world.trust_baselines["local_news"], n_agents)
+    trust_national_news = jitter(world.trust_baselines["national_news"], n_agents)
+    trust_friends = jitter(world.trust_baselines["friends"], n_agents)
+    trust_outgroups = jitter(world.trust_baselines["outgroups"], n_agents)
+    
+    # Apply neighborhood-specific adjustments if available
+    if neighborhood_ids is not None:
+        if neighborhood_income is not None:
+            # Higher income → higher trust in institutions (gov, media)
+            for nid, income in neighborhood_income.items():
+                mask = neighborhood_ids == nid
+                if mask.any():
+                    income_normalized = (income - 30000) / 80000
+                    income_normalized = np.clip(income_normalized, 0.0, 1.0)
+                    income_effect = (income_normalized - 0.5) * 0.25  # ±0.125 max effect
+                    trust_gov[mask] = np.clip(trust_gov[mask] + income_effect, 0.0, 1.0)
+                    trust_local_news[mask] = np.clip(trust_local_news[mask] + income_effect * 0.8, 0.0, 1.0)
+                    trust_national_news[mask] = np.clip(trust_national_news[mask] + income_effect * 0.8, 0.0, 1.0)
+        
+        if neighborhood_education is not None:
+            # Higher education → higher trust in media, lower trust in church
+            for nid, edu_rate in neighborhood_education.items():
+                mask = neighborhood_ids == nid
+                if mask.any():
+                    edu_effect = (edu_rate - 0.3) / 0.5  # Normalize: -1 to +1
+                    trust_local_news[mask] = np.clip(trust_local_news[mask] + 0.1 * edu_effect, 0.0, 1.0)
+                    trust_national_news[mask] = np.clip(trust_national_news[mask] + 0.1 * edu_effect, 0.0, 1.0)
+                    trust_church[mask] = np.clip(trust_church[mask] - 0.15 * edu_effect, 0.0, 1.0)
 
     return Trust(
-        trust_gov=jitter(world.trust_baselines["gov"]),
-        trust_church=jitter(world.trust_baselines["church"]),
-        trust_local_news=jitter(world.trust_baselines["local_news"]),
-        trust_national_news=jitter(world.trust_baselines["national_news"]),
-        trust_friends=jitter(world.trust_baselines["friends"]),
-        trust_outgroups=jitter(world.trust_baselines["outgroups"]),
+        trust_gov=trust_gov,
+        trust_church=trust_church,
+        trust_local_news=trust_local_news,
+        trust_national_news=trust_national_news,
+        trust_friends=trust_friends,
+        trust_outgroups=trust_outgroups,
     )
 
 
