@@ -75,6 +75,34 @@ python3 update_test_outputs.py
 python3 test_neighborhood_differentiation.py
 ```
 
+### Run a single simulation:
+```bash
+python3 -m sim run --config configs/world_baseline.yaml --out test_outputs/my_run
+```
+
+### Analyze spread patterns:
+```bash
+python3 << 'EOF'
+import pandas as pd
+from pathlib import Path
+
+output_dir = Path('test_outputs/my_run')
+metrics = pd.read_csv(output_dir / 'daily_metrics.csv')
+
+for claim in sorted(metrics['claim'].unique()):
+    claim_data = metrics[metrics['claim'] == claim].sort_values('day')
+    adoption = claim_data['adoption_fraction'].values
+    days = claim_data['day'].values
+    
+    mid_day = days[(adoption > 0.5).argmax()] if (adoption > 0.5).any() else None
+    max_increase = (adoption[1:] - adoption[:-1]).max() if len(adoption) > 1 else 0
+    
+    print(f"Claim {claim}:")
+    print(f"  Days to 50%: {mid_day}")
+    print(f"  Max daily increase: {max_increase:.1%}")
+EOF
+```
+
 ## File Organization
 
 Each simulation run directory contains:

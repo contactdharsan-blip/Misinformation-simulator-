@@ -67,11 +67,15 @@ def update_beliefs(
                     protected = max_true >= float(thresh)
                     protected_mask = protected.clone()
                     if protected.any():
-                        # For agents converting to truth, zero out ALL non-truth beliefs
+                        # For agents converting to truth, gradually decay non-truth beliefs (not instant zeroing)
+                        # This allows for more realistic spread patterns and misinformation retention
                         non_truth_mask = ~truth_mask
                         indices = torch.nonzero(protected).squeeze(1)
                         if non_truth_mask.any() and len(indices) > 0:
-                            beliefs[indices[:, None], non_truth_mask.unsqueeze(0).expand(len(indices), -1)] = 0.0
+                            # Gradual decay: multiply by 0.92 per update (8% reduction)
+                            # This allows misinformation to persist longer, creating more realistic retention
+                            decay_rate = 0.92  # 8% reduction per update (slower decay)
+                            beliefs[indices[:, None], non_truth_mask.unsqueeze(0).expand(len(indices), -1)] *= decay_rate
                         # Keep their truth belief value
                         truth_idx = torch.nonzero(truth_mask).squeeze(1)
                         if len(truth_idx) > 0:

@@ -297,7 +297,8 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         )
         
         # Track agents who have adopted truth (belief >= threshold)
-        # Once someone adopts truth, permanently zero their misinformation beliefs
+        # Truth protection: gradually reduce misinformation beliefs (not instant zeroing)
+        # This allows for more realistic spread patterns and misinformation retention
         if strains is not None:
             truth_mask = torch.tensor([getattr(s, "is_true", False) for s in strains], device=device, dtype=torch.bool)
             if truth_mask.any():
@@ -306,14 +307,18 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
                 new_truth_adopters = (max_true >= cfg.sim.adoption_threshold) & ~truth_adopters_mask
                 truth_adopters_mask = truth_adopters_mask | new_truth_adopters
                 
-                # For agents who have adopted truth, permanently zero misinformation beliefs
+                # For agents who have adopted truth, gradually decay misinformation beliefs
+                # Decay rate: 0.15 per day (reduces misinformation by 15% per day, not instant zero)
                 if truth_adopters_mask.any():
                     non_truth_mask = ~truth_mask
                     if non_truth_mask.any():
                         truth_adopter_indices = torch.nonzero(truth_adopters_mask).squeeze(1)
                         if len(truth_adopter_indices) > 0:
                             non_truth_cols = torch.nonzero(non_truth_mask).squeeze(1)
-                            beliefs[truth_adopter_indices[:, None], non_truth_cols.unsqueeze(0).expand(len(truth_adopter_indices), -1)] = 0.0
+                            # Gradual decay: multiply by 0.92 per day (8% reduction)
+                            # This allows misinformation to persist longer, creating more realistic retention
+                            decay_rate = 0.92  # 8% reduction per day (slower decay)
+                            beliefs[truth_adopter_indices[:, None], non_truth_cols.unsqueeze(0).expand(len(truth_adopter_indices), -1)] *= decay_rate
 
         trust = update_trust(trust, beliefs, debunk_pressure, world_effective)
 
