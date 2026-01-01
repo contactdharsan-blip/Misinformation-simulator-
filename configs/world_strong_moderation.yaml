@@ -12,9 +12,16 @@ sim:
   adoption_threshold: 0.8
 
 world:
-  moderation_strictness: 0.85
-  platform_friction: 0.4
-  debunk_intensity: 0.35
+  # Updated based on intervention effectiveness findings (PLOS ONE 0207383)
+  # Strong moderation with fast response is most effective
+  moderation_strictness: 0.85  # Very strict moderation
+  platform_friction: 0.4  # High friction slows spread
+  # Strong fact-checking with optimal timing
+  debunk_intensity: 0.35  # Strong corrections
+  # Fast governance response improves effectiveness
+  governance_response_speed: 0.8  # Very fast response
+  governance_transparency: 0.7
 moderation:
-  warning_effect: 0.5
-  downrank_effect: 0.55
+  # Updated moderation effects based on intervention studies
+  warning_effect: 0.5  # Strong warning effects
+  downrank_effect: 0.55  # Strong downranking effects

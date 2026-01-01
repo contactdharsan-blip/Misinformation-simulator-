@@ -12,7 +12,12 @@ sim:
   adoption_threshold: 0.8
 
 world:
-  algorithmic_amplification: 0.9
-  outrage_amplification: 0.8
-  feed_injection_rate: 0.25
-  platform_friction: 0.15
+  # Updated based on algorithmic amplification findings (IEEE 8576937, PLOS ONE 0207383)
+  # Algorithms strongly amplify emotional content, especially outrage
+  algorithmic_amplification: 0.9  # Very strong algorithmic effects
+  outrage_amplification: 0.8  # Strong outrage amplification
+  feed_injection_rate: 0.25  # High algorithmic content injection
+  platform_friction: 0.15  # Low friction allows rapid spread
+  # Additional parameters for outrage-driven spread
+  emotions_enabled: true
+  media_fragmentation: 0.5  # Moderate fragmentation

@@ -1,0 +1,61 @@
+# Network-Amplified Misinformation World
+# Based on network analysis findings (IEEE 8576937, Springer s13278-020-00696-x)
+# 
+# This configuration models a world where network structure strongly amplifies
+# misinformation spread through:
+# - Strong homophily creating echo chambers
+# - High clustering creating resilient misinformation communities
+# - Algorithmic amplification of emotional content
+# - Small-world properties accelerating cross-community spread
+
+base: world_baseline.yaml
+
+sim:
+  n_agents: 50000
+  n_claims: 1
+  n_steps: 365
+  snapshot_interval: 30
+  seed: 42
+  device: auto
+  deterministic: true
+  seed_fraction: 0.001
+  adoption_threshold: 0.8
+
+network:
+  # Strong homophily creates tight echo chambers (IEEE 8576937)
+  # Information spreads rapidly within communities but slowly across them
+  homophily_strength: 0.75  # Very strong echo chamber effects
+  geography_strength: 0.5
+  geo_scale: 1.5
+  # High intra-community connectivity creates resilient misinformation networks
+  intra_neighborhood_p: 0.08  # Very tight communities
+  # Small-world properties: strategic cross-community links accelerate spread
+  inter_neighborhood_p: 0.02  # More cross-community bridges
+  layer_multipliers:
+    family: 1.8  # Stronger family influence
+    work: 1.2
+    school: 1.0
+    church: 1.4  # Stronger church influence
+    neighborhood: 1.0  # Increased neighborhood influence
+
+world:
+  # Algorithmic amplification of emotional content (IEEE 8576937)
+  algorithmic_amplification: 0.7  # Strong algorithmic effects
+  # Outrage amplification drives viral spread
+  outrage_amplification: 0.6  # Strong outrage effects
+  # High feed injection increases algorithmic exposure
+  feed_injection_rate: 0.25  # More algorithmic content injection
+  # Media fragmentation isolates communities
+  media_fragmentation: 0.6  # High fragmentation
+  # Reduced moderation allows misinformation to spread
+  moderation_strictness: 0.3  # Lower moderation
+  platform_friction: 0.15  # Lower friction
+
+sharing:
+  # Higher base share rate in network-amplified environment
+  base_share_rate: 0.022
+  belief_sensitivity: 2.4
+  emotion_sensitivity: 0.75  # Strong emotional triggers
+  status_sensitivity: 0.6
+  conformity_sensitivity: 0.5
+  moderation_risk_sensitivity: 0.4  # Lower sensitivity to moderation

@@ -239,7 +239,30 @@ When citing these papers in your work:
    - CHI (Human-Computer Interaction)
    - CSCW (Computer-Supported Cooperative Work)
 
+### Network Analysis and Community Structure
+
+**IEEE Document 8576937**
+- **URL**: https://ieeexplore.ieee.org/abstract/document/8576937
+- **Key Parameters**: Network topology, algorithmic amplification, community structure
+- **Impact**: Updated `homophily_strength`, `algorithmic_amplification`, `feed_injection_rate`
+- **World Configs**: `world_baseline.yaml`, `world_network_amplified.yaml`, `world_outrage_algorithm.yaml`
+
+**Springer (s13278-020-00696-x)**
+- **URL**: https://link.springer.com/article/10.1007/s13278-020-00696-x
+- **Year**: 2020
+- **Key Parameters**: Community detection, information cascades, network structure
+- **Impact**: Updated `intra_neighborhood_p`, `inter_neighborhood_p`, `social_proof_threshold`
+- **World Configs**: `world_baseline.yaml`, `world_community_structure.yaml`
+
+### Temporal Dynamics and Intervention Effectiveness
+
+**PLOS ONE (journal.pone.0207383)**
+- **URL**: https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0207383
+- **Key Parameters**: Temporal spread patterns, intervention effectiveness, correction timing
+- **Impact**: Updated `base_share_rate`, `belief_decay`, `debunk_intensity`, `governance_response_speed`
+- **World Configs**: `world_baseline.yaml`, `world_temporal_dynamics.yaml`, `world_strong_moderation.yaml`
+
 ---
 
-**Last Updated**: 2024
-**Total Papers Listed**: 29+ foundational papers + recent research areas
+**Last Updated**: January 2025
+**Total Papers Listed**: 32+ foundational papers + recent research areas

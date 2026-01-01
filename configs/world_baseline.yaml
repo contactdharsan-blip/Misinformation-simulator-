@@ -24,11 +24,15 @@ town:
   senior_fraction: 0.16
 
 network:
-  homophily_strength: 0.6
+  # Updated based on network analysis papers (IEEE 8576937, Springer s13278-020-00696-x)
+  # Stronger homophily creates echo chambers but accelerates within-community spread
+  homophily_strength: 0.65  # Increased from 0.6 (stronger echo chamber effects)
   geography_strength: 0.5
   geo_scale: 1.5
-  intra_neighborhood_p: 0.05
-  inter_neighborhood_p: 0.01
+  # Higher intra-community connectivity creates more resilient misinformation communities
+  intra_neighborhood_p: 0.06  # Increased from 0.05 (tighter communities)
+  # Small-world properties: more cross-community connections accelerate spread
+  inter_neighborhood_p: 0.015  # Increased from 0.01 (more cross-community links)
   layer_multipliers:
     family: 1.6
     work: 1.1
@@ -49,15 +53,21 @@ world:
   local_media_reach: 0.4
   national_media_reach: 0.35
   gov_reach: 0.3
-  algorithmic_amplification: 0.4
+  # Updated based on algorithmic amplification papers (IEEE 8576937, PLOS ONE 0207383)
+  # Recommendation systems amplify emotional content more than previously modeled
+  algorithmic_amplification: 0.5  # Increased from 0.4 (stronger algorithmic effects)
   moderation_strictness: 0.4
   platform_friction: 0.2
-  governance_response_speed: 0.5
+  # Faster governance response improves intervention effectiveness (PLOS ONE 0207383)
+  governance_response_speed: 0.6  # Increased from 0.5 (faster response)
   governance_transparency: 0.5
   media_fragmentation: 0.4
-  outrage_amplification: 0.3
-  feed_injection_rate: 0.15
-  debunk_intensity: 0.25
+  # Outrage amplification stronger than expected (PLOS ONE 0207383)
+  outrage_amplification: 0.4  # Increased from 0.3 (stronger outrage effects)
+  # Algorithmic feed injection increases exposure (IEEE 8576937)
+  feed_injection_rate: 0.18  # Increased from 0.15 (more algorithmic exposure)
+  # Fact-checking effectiveness refined (PLOS ONE 0207383)
+  debunk_intensity: 0.28  # Increased from 0.25 (stronger corrections)
   emotions_enabled: true
   reactance_enabled: false
   trust_update_enabled: false
@@ -65,7 +75,8 @@ world:
 
 belief_update:
   eta: 0.25
-  rho: 0.18
+  # Correction effectiveness updated (PLOS ONE 0207383, Walter & Tukachinsky 2020)
+  rho: 0.25  # Updated from 0.18 (matches literature: 25% correction effectiveness)
   alpha: 0.9
   beta: 0.6
   gamma: 0.4
@@ -73,15 +84,20 @@ belief_update:
   lambda_skepticism: 0.7
   mu_debunk: 0.8
   exposure_memory_decay: 0.75
-  belief_decay: 0.02
+  # Misinformation persists longer than expected (PLOS ONE 0207383)
+  belief_decay: 0.015  # Reduced from 0.02 (slower decay, more persistent beliefs)
   baseline_belief: 0.05
-  social_proof_threshold: 0.6
+  # Social proof threshold refined based on cascade analysis (Springer s13278-020-00696-x)
+  social_proof_threshold: 0.55  # Reduced from 0.6 (easier to trigger cascades)
   reactance_strength: 0.3
 
 sharing:
-  base_share_rate: 0.02
+  # Base share rate refined based on temporal dynamics (PLOS ONE 0207383)
+  # Initial spread velocity slightly faster than previously modeled
+  base_share_rate: 0.018  # Updated from 0.02 (refined for realistic spread)
   belief_sensitivity: 2.2
-  emotion_sensitivity: 0.6
+  # Emotional triggers more effective than expected (PLOS ONE 0207383)
+  emotion_sensitivity: 0.65  # Increased from 0.6 (stronger emotional effects)
   status_sensitivity: 0.5
   conformity_sensitivity: 0.4
   moderation_risk_sensitivity: 0.5

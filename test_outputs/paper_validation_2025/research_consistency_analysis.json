@@ -1,0 +1,84 @@
+{
+  "research_targets": {
+    "adoption_rate_range": [
+      0.2,
+      0.35
+    ],
+    "peak_timing_range": [
+      14,
+      28
+    ],
+    "spread_ratio": 6.0,
+    "correction_effectiveness": 0.25
+  },
+  "configs": {
+    "baseline_updated": {
+      "config": "baseline_updated",
+      "claims": {
+        "claim_0": {
+          "final_adoption": 1.0,
+          "peak_adoption": 1.0,
+          "peak_day": 15,
+          "max_daily_increase": 0.3955800235271454,
+          "research_checks": {
+            "adoption_rate": "\u26a0 100.0% outside target range",
+            "peak_timing": "\u2713 In target range (21 \u00b1 7 days)",
+            "spread_pattern": "\u26a0 Abrupt spread (max increase 39.6%)"
+          }
+        }
+      },
+      "overall": {}
+    },
+    "network_amplified": {
+      "config": "network_amplified",
+      "claims": {
+        "claim_0": {
+          "final_adoption": 1.0,
+          "peak_adoption": 1.0,
+          "peak_day": 13,
+          "max_daily_increase": 0.47859999537467957,
+          "research_checks": {
+            "adoption_rate": "\u26a0 100.0% outside target range",
+            "peak_timing": "\u26a0 Peak at day 13 (target: 21 \u00b1 7 days)",
+            "spread_pattern": "\u26a0 Abrupt spread (max increase 47.9%)"
+          }
+        }
+      },
+      "overall": {}
+    },
+    "temporal_dynamics": {
+      "config": "temporal_dynamics",
+      "claims": {
+        "claim_0": {
+          "final_adoption": 0.9999600052833556,
+          "peak_adoption": 1.0,
+          "peak_day": 17,
+          "max_daily_increase": 0.37846001982688904,
+          "research_checks": {
+            "adoption_rate": "\u26a0 100.0% outside target range",
+            "peak_timing": "\u2713 In target range (21 \u00b1 7 days)",
+            "spread_pattern": "\u26a0 Abrupt spread (max increase 37.8%)"
+          }
+        }
+      },
+      "overall": {}
+    },
+    "community_structure": {
+      "config": "community_structure",
+      "claims": {
+        "claim_0": {
+          "final_adoption": 1.0,
+          "peak_adoption": 1.0,
+          "peak_day": 12,
+          "max_daily_increase": 0.4853999838232994,
+          "research_checks": {
+            "adoption_rate": "\u26a0 100.0% outside target range",
+            "peak_timing": "\u26a0 Peak at day 12 (target: 21 \u00b1 7 days)",
+            "spread_pattern": "\u26a0 Abrupt spread (max increase 48.5%)"
+          }
+        }
+      },
+      "overall": {}
+    }
+  }
+}

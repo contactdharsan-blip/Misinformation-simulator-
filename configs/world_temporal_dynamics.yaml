@@ -1,0 +1,50 @@
+# Temporal Dynamics World
+# Based on temporal analysis findings (PLOS ONE 0207383)
+#
+# This configuration models a world focused on temporal spread patterns:
+# - Faster initial spread velocity
+# - Earlier peak timing for misinformation
+# - Slower belief decay (more persistent misinformation)
+# - Optimized intervention timing
+
+base: world_baseline.yaml
+
+sim:
+  n_agents: 50000
+  n_claims: 1
+  n_steps: 365
+  snapshot_interval: 30
+  seed: 42
+  device: auto
+  deterministic: true
+  seed_fraction: 0.001
+  adoption_threshold: 0.8
+
+world:
+  # Faster governance response improves intervention effectiveness
+  governance_response_speed: 0.75  # Very fast response
+  governance_transparency: 0.6
+  # Stronger fact-checking with optimal timing
+  debunk_intensity: 0.32  # Strong corrections
+  # Early moderation is more effective
+  moderation_strictness: 0.5
+  platform_friction: 0.25
+
+belief_update:
+  # Correction effectiveness (PLOS ONE 0207383, Walter & Tukachinsky 2020)
+  rho: 0.25  # 25% correction effectiveness
+  # Misinformation persists longer than expected
+  belief_decay: 0.012  # Slower decay (more persistent)
+  # Social proof threshold for cascade initiation
+  social_proof_threshold: 0.5  # Lower threshold (easier cascades)
+  # Exposure memory decays faster (temporal effects)
+  exposure_memory_decay: 0.7  # Faster memory decay
+
+sharing:
+  # Faster initial spread velocity
+  base_share_rate: 0.02  # Faster initial spread
+  belief_sensitivity: 2.3
+  emotion_sensitivity: 0.7
+  status_sensitivity: 0.55
+  conformity_sensitivity: 0.45
+  moderation_risk_sensitivity: 0.5

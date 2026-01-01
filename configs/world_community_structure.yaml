@@ -1,0 +1,70 @@
+# Community Structure World
+# Based on community detection findings (Springer s13278-020-00696-x)
+#
+# This configuration models a world with strong community structure:
+# - Tight-knit communities with high clustering
+# - Strong homophily creating echo chambers
+# - Information cascades within communities
+# - Limited cross-community information flow
+
+base: world_baseline.yaml
+
+sim:
+  n_agents: 50000
+  n_claims: 1
+  n_steps: 365
+  snapshot_interval: 30
+  seed: 42
+  device: auto
+  deterministic: true
+  seed_fraction: 0.001
+  adoption_threshold: 0.8
+
+network:
+  # Very strong homophily creates isolated echo chambers
+  homophily_strength: 0.8  # Very strong echo chambers
+  geography_strength: 0.6  # Stronger geographic clustering
+  geo_scale: 1.8
+  # High intra-community connectivity
+  intra_neighborhood_p: 0.1  # Very tight communities
+  # Limited cross-community connections
+  inter_neighborhood_p: 0.005  # Fewer cross-community links
+  layer_multipliers:
+    family: 2.0  # Very strong family bonds
+    work: 1.3
+    school: 1.1
+    church: 1.5  # Strong church communities
+    neighborhood: 1.2  # Strong neighborhood ties
+
+world:
+  # High media fragmentation isolates communities
+  media_fragmentation: 0.7  # Very high fragmentation
+  local_media_reach: 0.35
+  national_media_reach: 0.3
+  # Reduced trust in outgroups
+  trust_baselines:
+    gov: 0.5
+    church: 0.5  # Higher trust within communities
+    local_news: 0.55  # Higher trust in local sources
+    national_news: 0.4
+    friends: 0.7  # Very high trust in friends
+    outgroups: 0.25  # Lower trust in outgroups
+  # Algorithmic amplification within communities
+  algorithmic_amplification: 0.55
+  outrage_amplification: 0.45
+
+belief_update:
+  # Social proof more effective within tight communities
+  social_proof_threshold: 0.5  # Lower threshold (easier cascades)
+  # Beliefs persist longer in echo chambers
+  belief_decay: 0.01  # Slower decay (more persistent)
+  # Stronger conformity in tight communities
+  delta: 0.6  # Increased conformity
+
+sharing:
+  # Higher sharing within communities
+  base_share_rate: 0.02
+  belief_sensitivity: 2.5
+  emotion_sensitivity: 0.7
+  conformity_sensitivity: 0.5  # Stronger conformity effects
+  status_sensitivity: 0.6
