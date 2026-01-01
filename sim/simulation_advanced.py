@@ -329,8 +329,11 @@ def run_advanced_simulation(
             logging.info(f"Day {day}: Prebunked {n_prebunked} agents")
 
         # ===== SHARING BEHAVIOR =====
+        # Get ages for age-based sharing multiplier (Guess et al., 2019: 65+ share 7x more)
+        ages_tensor = torch.tensor(town.demographics.age, device=device, dtype=torch.float32)
+        
         share_probs = compute_share_probabilities(
-            beliefs, traits, emotions, base_cfg.sharing, base_cfg.world, strains
+            beliefs, traits, emotions, base_cfg.sharing, base_cfg.world, strains, ages=ages_tensor
         )
         share_probs, warnings = apply_moderation(
             share_probs, strains, base_cfg.world, base_cfg.moderation

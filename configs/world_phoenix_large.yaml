@@ -1,0 +1,124 @@
+base: world_phoenix_with_misinfo.yaml
+
+sim:
+  n_agents: 60000  # 10,000 per neighborhood × 6 neighborhoods
+  n_claims: 4
+  n_steps: 50
+  snapshot_interval: 30
+  seed: 42
+  device: auto
+  deterministic: true
+  seed_fraction: 0.001
+  adoption_threshold: 0.8
+
+# Update neighborhood populations to 10,000 each
+town:
+  neighborhood_specs:
+    - name: "downtown_core"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.18
+          "18-34": 0.38
+          "35-54": 0.28
+          "55-74": 0.12
+          "75+": 0.04
+        ethnicity:
+          white: 0.42
+          hispanic: 0.38
+          black: 0.08
+          asian: 0.05
+          other: 0.07
+        median_income: 48000
+        college_educated: 0.42
+      cultural_composition: [0.25, 0.35, 0.20, 0.20]
+    - name: "paradise_valley"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.24
+          "18-34": 0.18
+          "35-54": 0.32
+          "55-74": 0.20
+          "75+": 0.06
+        ethnicity:
+          white: 0.78
+          hispanic: 0.12
+          black: 0.02
+          asian: 0.05
+          other: 0.03
+        median_income: 98000
+        college_educated: 0.68
+      cultural_composition: [0.65, 0.15, 0.10, 0.10]
+    - name: "maryvale"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.32
+          "18-34": 0.28
+          "35-54": 0.26
+          "55-74": 0.11
+          "75+": 0.03
+        ethnicity:
+          white: 0.15
+          hispanic: 0.72
+          black: 0.06
+          asian: 0.02
+          other: 0.05
+        median_income: 38000
+        college_educated: 0.18
+      cultural_composition: [0.10, 0.75, 0.10, 0.05]
+    - name: "tempe_mesa_border"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.20
+          "18-34": 0.35
+          "35-54": 0.25
+          "55-74": 0.15
+          "75+": 0.05
+        ethnicity:
+          white: 0.52
+          hispanic: 0.28
+          black: 0.08
+          asian: 0.08
+          other: 0.04
+        median_income: 62000
+        college_educated: 0.45
+      cultural_composition: [0.35, 0.30, 0.20, 0.15]
+    - name: "north_scottsdale"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.19
+          "18-34": 0.15
+          "35-54": 0.28
+          "55-74": 0.28
+          "75+": 0.10
+        ethnicity:
+          white: 0.82
+          hispanic: 0.10
+          black: 0.02
+          asian: 0.04
+          other: 0.02
+        median_income: 105000
+        college_educated: 0.72
+      cultural_composition: [0.70, 0.12, 0.10, 0.08]
+    - name: "south_mountain"
+      population: 10000
+      demographics:
+        age_distribution:
+          "0-17": 0.30
+          "18-34": 0.27
+          "35-54": 0.25
+          "55-74": 0.14
+          "75+": 0.04
+        ethnicity:
+          white: 0.12
+          hispanic: 0.58
+          black: 0.22
+          asian: 0.03
+          other: 0.05
+        median_income: 41000
+        college_educated: 0.20
+      cultural_composition: [0.08, 0.52, 0.32, 0.08]

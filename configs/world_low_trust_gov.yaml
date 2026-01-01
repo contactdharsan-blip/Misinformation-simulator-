@@ -1,4 +1,16 @@
 base: world_baseline.yaml
+
+sim:
+  n_agents: 50000
+  n_claims: 1
+  n_steps: 365
+  snapshot_interval: 30
+  seed: 42
+  device: auto
+  deterministic: true
+  seed_fraction: 0.001
+  adoption_threshold: 0.8
+
 world:
   trust_baselines:
     gov: 0.25

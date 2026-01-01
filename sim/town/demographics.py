@@ -105,14 +105,17 @@ def generate_traits(
     
     if neighborhood_ids is not None and neighborhood_education is not None:
         # Higher education → higher skepticism and numeracy, lower conspiratorial tendency
+        # Based on Pennycook & Rand (2021): education-belief correlation of -0.25
         for nid, edu_rate in neighborhood_education.items():
             mask = neighborhood_ids == nid
             if mask.any():
-                # Education effect: +0.15 skepticism, +0.2 numeracy for high education neighborhoods
-                edu_effect = (edu_rate - 0.3) / 0.5  # Normalize: 0.3 (low) to 0.8 (high) -> -1 to +1
-                skepticism[mask] = np.clip(skepticism[mask] + 0.15 * edu_effect, 0.0, 1.0)
-                numeracy[mask] = np.clip(numeracy[mask] + 0.2 * edu_effect, 0.0, 1.0)
-                conspiratorial_tendency[mask] = np.clip(conspiratorial_tendency[mask] - 0.15 * edu_effect, 0.0, 1.0)
+                # Education effect: stronger effect to achieve -0.25 correlation
+                # Normalize education rate to [-1, 1] scale
+                edu_normalized = (edu_rate - 0.3) / 0.5  # 0.3 (low) to 0.8 (high) -> -1 to +1
+                # Stronger effects to match literature: -0.25 correlation means high-edu have ~25% lower belief
+                skepticism[mask] = np.clip(skepticism[mask] + 0.25 * edu_normalized, 0.0, 1.0)
+                numeracy[mask] = np.clip(numeracy[mask] + 0.3 * edu_normalized, 0.0, 1.0)
+                conspiratorial_tendency[mask] = np.clip(conspiratorial_tendency[mask] - 0.25 * edu_normalized, 0.0, 1.0)
     
     if neighborhood_ids is not None and neighborhood_income is not None:
         # Higher income → lower conformity (more independent thinking)

@@ -343,7 +343,7 @@ def main():
     
     # Configuration
     config_path = "configs/world_phoenix_with_misinfo.yaml"
-    output_dir = "test_runs/phoenix_neighborhood_test"
+    output_dir = "test_outputs/phoenix_neighborhood_test"
     
     # Step 1: Run simulation
     output_path = run_test_simulation(config_path, output_dir)

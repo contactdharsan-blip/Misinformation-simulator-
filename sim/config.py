@@ -144,10 +144,11 @@ def resolve_emotion_profile(emotion_spec: Dict[str, Any] | str) -> Dict[str, flo
 
 
 # General misinformation defaults based on research (Vosoughi et al., 2018; Roozenbeek et al., 2020)
+# Vosoughi et al. (2018): False news spreads 6x faster than true news
 GENERAL_MISINFORMATION_DEFAULTS = {
     "memeticity": 0.70,           # Highly shareable
-    "virality": 1.0,               # Baseline virality (6x truth)
-    "falsifiability": 0.40,        # Hard to debunk
+    "virality": 1.0,               # Baseline virality (6x truth: 1.0 / 0.167 ≈ 6x)
+    "falsifiability": 0.40,        # Hard to debunk (Lewandowsky et al., 2012)
     "stealth": 0.55,               # Evades detection
     "mutation_rate": 0.06,          # Moderate mutation rate
     "violation_risk": 0.35,         # Moderate policy violations
@@ -157,9 +158,11 @@ GENERAL_MISINFORMATION_DEFAULTS = {
 
 
 # Truth defaults based on research
+# Vosoughi et al. (2018): True news spreads 6x slower than false news
+# Ratio: 1.0 / 6.0 = 0.167 (exactly 6x difference)
 TRUTH_DEFAULTS = {
     "memeticity": 0.25,            # Spreads more deliberately
-    "virality": 0.17,               # 6x slower than misinformation
+    "virality": 0.167,             # Exactly 6x slower than misinformation (1.0 / 6.0 = 0.167)
     "falsifiability": 1.0,          # Fully verifiable
     "stealth": 0.0,                 # Transparent
     "mutation_rate": 0.0,           # Doesn't mutate
@@ -266,7 +269,7 @@ class WorldConfig(BaseModel):
     outrage_amplification: float = 0.2
     operator_enabled: bool = False
     emotions_enabled: bool = True
-    debunk_intensity: float = 0.25
+    debunk_intensity: float = 0.25  # Correction intensity (Walter & Tukachinsky, 2020: 25% ± 8% effectiveness)
     feed_injection_rate: float = 0.15
     intervention_day: int | None = None
     intervention_type: str | None = None
@@ -301,13 +304,13 @@ class BeliefUpdateConfig(BaseModel):
     baseline_belief: float = 0.05
     social_proof_threshold: float = 0.6
     eta: float = 0.25
-    rho: float = 0.18
+    rho: float = 0.25  # Correction effectiveness: 25% ± 8% (Walter & Tukachinsky, 2020 meta-analysis)
     alpha: float = 0.9
     beta: float = 0.6
     gamma: float = 0.4
     delta: float = 0.5
     lambda_skepticism: float = 0.7
-    mu_debunk: float = 0.8
+    mu_debunk: float = 0.8  # Debunking pressure multiplier
     exposure_memory_decay: float = 0.75
     belief_decay: float = 0.02
     reactance_strength: float = 0.3
@@ -315,7 +318,7 @@ class BeliefUpdateConfig(BaseModel):
 
 class SharingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
-    base_share_rate: float = 0.05
+    base_share_rate: float = 0.085  # Guess et al. (2019): 8.5% share given exposure
     belief_sensitivity: float = 2.0
     emotion_sensitivity: float = 0.5
     status_sensitivity: float = 0.5

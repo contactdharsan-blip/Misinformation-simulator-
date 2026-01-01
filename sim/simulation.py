@@ -232,8 +232,11 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
                     1.0, cfg.world.debunk_intensity * (1 + cfg.world.intervention_strength)
                 )
 
+        # Get ages for age-based sharing multiplier
+        ages_tensor = torch.tensor(town.demographics.age, device=device, dtype=torch.float32)
+        
         share_probs = compute_share_probabilities(
-            beliefs, traits, emotions, cfg.sharing, world_effective, strains
+            beliefs, traits, emotions, cfg.sharing, world_effective, strains, ages=ages_tensor
         )
         share_probs, warnings = apply_moderation(share_probs, strains, world_effective, cfg.moderation)
 
