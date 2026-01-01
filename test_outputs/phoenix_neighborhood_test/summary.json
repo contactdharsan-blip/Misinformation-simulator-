@@ -1,0 +1,23 @@
+{
+  "claim_0_peak_day": 7,
+  "claim_0_peak_adoption": 1.0,
+  "claim_0_final_adoption": 1.0,
+  "claim_0_final_polarization": 0.5000004382585246,
+  "claim_0_intervention_effect": 0.0,
+  "claim_1_peak_day": 5,
+  "claim_1_peak_adoption": 0.0346,
+  "claim_1_final_adoption": 0.0,
+  "claim_1_final_polarization": 0.5,
+  "claim_1_intervention_effect": 0.0,
+  "claim_2_peak_day": 5,
+  "claim_2_peak_adoption": 0.0296,
+  "claim_2_final_adoption": 0.0,
+  "claim_2_final_polarization": 0.5,
+  "claim_2_intervention_effect": 0.0,
+  "claim_3_peak_day": 5,
+  "claim_3_peak_adoption": 0.0514,
+  "claim_3_final_adoption": 0.0,
+  "claim_3_final_polarization": 0.5,
+  "claim_3_intervention_effect": 0.0,
+  "steps": 50
+}

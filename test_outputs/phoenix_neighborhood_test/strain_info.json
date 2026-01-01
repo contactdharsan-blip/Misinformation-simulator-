@@ -1,0 +1,9 @@
+{
+  "initial_strains": [
+    "official_health_guidance",
+    "white_economic_anxiety",
+    "hispanic_immigration_fear",
+    "black_systemic_injustice"
+  ],
+  "note": "Mutations create new strains but are not tracked as separate claims due to fixed tensor size"
+}

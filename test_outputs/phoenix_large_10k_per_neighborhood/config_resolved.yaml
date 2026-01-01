@@ -1,0 +1,337 @@
+sim:
+  n_agents: 60000
+  n_steps: 50
+  steps: null
+  n_claims: 4
+  seed: 42
+  device: cpu
+  snapshot_interval: 50
+  adoption_threshold: 0.7
+  deterministic: true
+  seed_fraction: 0.01
+  use_tf32: false
+town:
+  n_neighborhoods: 5
+  neighborhood_size_mean: 200.0
+  neighborhood_size_std: 50.0
+  neighborhood_specs:
+  - name: downtown_core
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.18
+        18-34: 0.38
+        35-54: 0.28
+        55-74: 0.12
+        75+: 0.04
+      ethnicity:
+        white: 0.42
+        hispanic: 0.38
+        black: 0.08
+        asian: 0.05
+        other: 0.07
+      median_income: 48000
+      college_educated: 0.42
+    cultural_composition:
+    - 0.25
+    - 0.35
+    - 0.2
+    - 0.2
+  - name: paradise_valley
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.24
+        18-34: 0.18
+        35-54: 0.32
+        55-74: 0.2
+        75+: 0.06
+      ethnicity:
+        white: 0.78
+        hispanic: 0.12
+        black: 0.02
+        asian: 0.05
+        other: 0.03
+      median_income: 98000
+      college_educated: 0.68
+    cultural_composition:
+    - 0.65
+    - 0.15
+    - 0.1
+    - 0.1
+  - name: maryvale
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.32
+        18-34: 0.28
+        35-54: 0.26
+        55-74: 0.11
+        75+: 0.03
+      ethnicity:
+        white: 0.15
+        hispanic: 0.72
+        black: 0.06
+        asian: 0.02
+        other: 0.05
+      median_income: 38000
+      college_educated: 0.18
+    cultural_composition:
+    - 0.1
+    - 0.75
+    - 0.1
+    - 0.05
+  - name: tempe_mesa_border
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.2
+        18-34: 0.35
+        35-54: 0.25
+        55-74: 0.15
+        75+: 0.05
+      ethnicity:
+        white: 0.52
+        hispanic: 0.28
+        black: 0.08
+        asian: 0.08
+        other: 0.04
+      median_income: 62000
+      college_educated: 0.45
+    cultural_composition:
+    - 0.35
+    - 0.3
+    - 0.2
+    - 0.15
+  - name: north_scottsdale
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.19
+        18-34: 0.15
+        35-54: 0.28
+        55-74: 0.28
+        75+: 0.1
+      ethnicity:
+        white: 0.82
+        hispanic: 0.1
+        black: 0.02
+        asian: 0.04
+        other: 0.02
+      median_income: 105000
+      college_educated: 0.72
+    cultural_composition:
+    - 0.7
+    - 0.12
+    - 0.1
+    - 0.08
+  - name: south_mountain
+    population: 10000
+    demographics:
+      age_distribution:
+        0-17: 0.3
+        18-34: 0.27
+        35-54: 0.25
+        55-74: 0.14
+        75+: 0.04
+      ethnicity:
+        white: 0.12
+        hispanic: 0.58
+        black: 0.22
+        asian: 0.03
+        other: 0.05
+      median_income: 41000
+      college_educated: 0.2
+    cultural_composition:
+    - 0.08
+    - 0.52
+    - 0.32
+    - 0.08
+  neighborhood_grid: null
+  household_size_mean: 3.0
+  household_size_std: 1.0
+  workplace_size_mean: 18.0
+  school_size_mean: 22.0
+  church_size_mean: 40.0
+  church_attendance_rate: 0.25
+  min_age: 0
+  max_age: 90
+  children_fraction: 0.22
+  senior_fraction: 0.16
+  city: null
+  data_source: null
+  education_levels:
+  - none
+  - high_school
+  - some_college
+  - bachelors
+  - graduate
+  occupation_types:
+  - unemployed
+  - service
+  - blue_collar
+  - white_collar
+  - professional
+  - retired
+traits:
+  skepticism_mean: 0.5
+  skepticism_std: 0.15
+  trust_mean: 0.5
+  trust_std: 0.15
+  personality:
+    alpha: 2.0
+    beta: 2.0
+  cognitive:
+    alpha: 2.0
+    beta: 2.0
+  social:
+    alpha: 2.0
+    beta: 2.0
+  emotion:
+    alpha: 2.0
+    beta: 2.0
+network:
+  network_type: small_world
+  mean_degree: 8.0
+  clustering: 0.3
+  rewiring_prob: 0.1
+  homophily_strength: 0.6
+  geography_strength: 0.5
+  geo_scale: 1.5
+  intra_neighborhood_p: 0.05
+  inter_neighborhood_p: 0.01
+  layer_multipliers:
+    family: 1.6
+    work: 1.1
+    school: 1.0
+    church: 1.2
+    neighborhood: 0.8
+world:
+  media_channels:
+  - mainstream
+  moderation_strictness: 0.5
+  algorithmic_amplification: 0.3
+  outrage_amplification: 0.2
+  operator_enabled: false
+  emotions_enabled: true
+  debunk_intensity: 0.25
+  feed_injection_rate: 0.15
+  intervention_day: null
+  intervention_type: null
+  intervention_strength: 0.0
+  trust_baselines:
+    gov: 0.55
+    church: 0.45
+    local_news: 0.5
+    national_news: 0.45
+    friends: 0.6
+    outgroups: 0.3
+  trust_variance: 0.12
+  platform_friction: 0.2
+  governance_response_speed: 0.5
+  governance_transparency: 0.5
+  media_fragmentation: 0.4
+  reactance_enabled: false
+  trust_update_enabled: false
+  trust_erosion_rate: 0.02
+  church_centrality: 0.4
+  local_media_reach: 0.4
+  national_media_reach: 0.35
+  gov_reach: 0.3
+  truth_campaign_intensity: 0.3
+belief_update:
+  learning_rate: 0.15
+  decay_rate: 0.008
+  social_proof_weight: 0.22
+  skepticism_dampening: 0.4
+  mutual_exclusion_hard: false
+  truth_protection_threshold: null
+  baseline_belief: 0.05
+  social_proof_threshold: 0.6
+  eta: 0.25
+  rho: 0.18
+  alpha: 0.9
+  beta: 0.6
+  gamma: 0.4
+  delta: 0.5
+  lambda_skepticism: 0.7
+  mu_debunk: 0.8
+  exposure_memory_decay: 0.75
+  belief_decay: 0.02
+  reactance_strength: 0.3
+sharing:
+  base_share_rate: 0.05
+  belief_sensitivity: 2.0
+  emotion_sensitivity: 0.5
+  status_sensitivity: 0.5
+  conformity_sensitivity: 0.4
+  moderation_risk_sensitivity: 0.5
+moderation:
+  warning_effect: 0.35
+  downrank_effect: 0.4
+strains:
+- name: official_health_guidance
+  topic: health_guidance
+  memeticity: 0.35
+  emotional_profile:
+    fear: 0.1
+    anger: 0.0
+    hope: 0.6
+  falsifiability: 1.0
+  stealth: 0.0
+  mutation_rate: 0.0
+  violation_risk: 0.0
+  is_true: true
+  virality: 0.6
+  persistence: 0.6
+- name: white_economic_anxiety
+  topic: economic_panic
+  memeticity: 0.65
+  emotional_profile:
+    fear: 0.5
+    anger: 0.3
+    hope: 0.2
+  falsifiability: 0.6
+  stealth: 0.45
+  mutation_rate: 0.04
+  violation_risk: 0.35
+  is_true: false
+  virality: 1.1
+  persistence: 0.3
+- name: hispanic_immigration_fear
+  topic: outsider_threat
+  memeticity: 0.68
+  emotional_profile:
+    fear: 0.5
+    anger: 0.3
+    hope: 0.2
+  falsifiability: 0.55
+  stealth: 0.5
+  mutation_rate: 0.04
+  violation_risk: 0.5
+  is_true: false
+  virality: 1.2
+  persistence: 0.35
+- name: black_systemic_injustice
+  topic: moral_spiral
+  memeticity: 0.7
+  emotional_profile:
+    fear: 0.3
+    anger: 0.6
+    hope: 0.1
+  falsifiability: 0.5
+  stealth: 0.5
+  mutation_rate: 0.05
+  violation_risk: 0.45
+  is_true: false
+  virality: 1.25
+  persistence: 0.4
+metrics:
+  community_backend: auto
+  community_max_nodes: 20000
+  include_neighborhood_clusters: true
+  cluster_penetration_enabled: true
+  use_gpu_metrics: true
+output:
+  save_plots: true
+  save_snapshots: true

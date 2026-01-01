@@ -1,0 +1,13 @@
+{
+  "claim_0_peak_day": 10,
+  "claim_0_peak_adoption": 1.0,
+  "claim_0_final_adoption": 1.0,
+  "claim_0_final_polarization": 0.5000007968196201,
+  "claim_0_intervention_effect": 0.0,
+  "claim_1_peak_day": 7,
+  "claim_1_peak_adoption": 0.24418,
+  "claim_1_final_adoption": 0.0,
+  "claim_1_final_polarization": 0.5,
+  "claim_1_intervention_effect": 0.0,
+  "steps": 365
+}

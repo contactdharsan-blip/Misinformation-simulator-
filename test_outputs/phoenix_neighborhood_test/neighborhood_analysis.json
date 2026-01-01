@@ -1,0 +1,1332 @@
+{
+  "simulation_info": {
+    "config": "configs/world_phoenix_with_misinfo.yaml",
+    "n_agents": 5000,
+    "n_steps": 50,
+    "n_claims": 4,
+    "adoption_threshold": 0.7,
+    "neighborhoods": 6
+  },
+  "strains": [
+    {
+      "index": 0,
+      "name": "official_health_guidance",
+      "is_truth": true
+    },
+    {
+      "index": 1,
+      "name": "white_economic_anxiety",
+      "is_truth": false
+    },
+    {
+      "index": 2,
+      "name": "hispanic_immigration_fear",
+      "is_truth": false
+    },
+    {
+      "index": 3,
+      "name": "black_systemic_injustice",
+      "is_truth": false
+    }
+  ],
+  "neighborhoods": {
+    "0": {
+      "name": "downtown_core",
+      "education": 0.42,
+      "income": 48000,
+      "ethnicity": {
+        "white": 0.42,
+        "hispanic": 0.38,
+        "black": 0.08,
+        "asian": 0.05,
+        "other": 0.07
+      }
+    },
+    "1": {
+      "name": "paradise_valley",
+      "education": 0.68,
+      "income": 98000,
+      "ethnicity": {
+        "white": 0.78,
+        "hispanic": 0.12,
+        "black": 0.02,
+        "asian": 0.05,
+        "other": 0.03
+      }
+    },
+    "2": {
+      "name": "maryvale",
+      "education": 0.18,
+      "income": 38000,
+      "ethnicity": {
+        "white": 0.15,
+        "hispanic": 0.72,
+        "black": 0.06,
+        "asian": 0.02,
+        "other": 0.05
+      }
+    },
+    "3": {
+      "name": "tempe_mesa_border",
+      "education": 0.45,
+      "income": 62000,
+      "ethnicity": {
+        "white": 0.52,
+        "hispanic": 0.28,
+        "black": 0.08,
+        "asian": 0.08,
+        "other": 0.04
+      }
+    },
+    "4": {
+      "name": "north_scottsdale",
+      "education": 0.72,
+      "income": 105000,
+      "ethnicity": {
+        "white": 0.82,
+        "hispanic": 0.1,
+        "black": 0.02,
+        "asian": 0.04,
+        "other": 0.02
+      }
+    },
+    "5": {
+      "name": "south_mountain",
+      "education": 0.2,
+      "income": 41000,
+      "ethnicity": {
+        "white": 0.12,
+        "hispanic": 0.58,
+        "black": 0.22,
+        "asian": 0.03,
+        "other": 0.05
+      }
+    }
+  },
+  "analysis": {
+    "claim_0": {
+      "strain_name": "official_health_guidance",
+      "is_truth": true,
+      "by_day": {
+        "0": {
+          "day": 0,
+          "overall": {
+            "mean_adoption": 0.010099869962224069,
+            "std_adoption": 0.002019550155160797,
+            "min_adoption": 0.00821917808219178,
+            "max_adoption": 0.013677811550151976,
+            "range_adoption": 0.005458633467960196,
+            "mean_belief": 0.20336882770061493,
+            "std_belief": 0.0017582269247438922
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.013677811550151976,
+              "mean_belief": 0.20378486812114716,
+              "std_belief": 0.079306960105896
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.01059322033898305,
+              "mean_belief": 0.2025841623544693,
+              "std_belief": 0.07027130573987961
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.009183673469387756,
+              "mean_belief": 0.20532020926475525,
+              "std_belief": 0.06533784419298172
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.010501750291715286,
+              "mean_belief": 0.20468223094940186,
+              "std_belief": 0.06980859488248825
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.00821917808219178,
+              "mean_belief": 0.20034892857074738,
+              "std_belief": 0.06228453665971756
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.00842358604091456,
+              "mean_belief": 0.20349256694316864,
+              "std_belief": 0.0626656636595726
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.009406199210587416,
+              "mean_belief": 0.20146654546260834,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.008803629755151157,
+              "mean_belief": 0.20440638810396194,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": -0.0006025694554362589,
+              "belief_diff": 0.002939842641353607,
+              "adoption_pct_diff": -6.406088601206954,
+              "belief_pct_diff": 1.459221249167264
+            }
+          }
+        },
+        "25": {
+          "day": 25,
+          "overall": {
+            "mean_adoption": 1.0,
+            "std_adoption": 0.0,
+            "min_adoption": 1.0,
+            "max_adoption": 1.0,
+            "range_adoption": 0.0,
+            "mean_belief": 0.9686991373697916,
+            "std_belief": 6.26568456142523e-05
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.9686065316200256,
+              "std_belief": 0.0006810945924371481
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.968705415725708,
+              "std_belief": 0.000715411442797631
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.9687768816947937,
+              "std_belief": 0.0006322527769953012
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.9687288403511047,
+              "std_belief": 0.0006836932152509689
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.9687325358390808,
+              "std_belief": 0.0006355478544719517
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 1.0,
+              "mean_belief": 0.9686446189880371,
+              "std_belief": 0.0006680124206468463
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 1.0,
+              "mean_belief": 0.9687189757823944,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 1.0,
+              "mean_belief": 0.9687107503414154,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": 0.0,
+              "belief_diff": -8.225440979003906e-06,
+              "adoption_pct_diff": 0.0,
+              "belief_pct_diff": -0.0008491049710635178
+            }
+          }
+        }
+      },
+      "summary": {
+        "day": 0,
+        "overall": {
+          "mean_adoption": 0.010099869962224069,
+          "std_adoption": 0.002019550155160797,
+          "min_adoption": 0.00821917808219178,
+          "max_adoption": 0.013677811550151976,
+          "range_adoption": 0.005458633467960196,
+          "mean_belief": 0.20336882770061493,
+          "std_belief": 0.0017582269247438922
+        },
+        "neighborhoods": [
+          {
+            "neighborhood_id": 0,
+            "neighborhood_name": "downtown_core",
+            "education": 0.42,
+            "income": 48000,
+            "population": 658,
+            "adoption_rate": 0.013677811550151976,
+            "mean_belief": 0.20378486812114716,
+            "std_belief": 0.079306960105896
+          },
+          {
+            "neighborhood_id": 1,
+            "neighborhood_name": "paradise_valley",
+            "education": 0.68,
+            "income": 98000,
+            "population": 944,
+            "adoption_rate": 0.01059322033898305,
+            "mean_belief": 0.2025841623544693,
+            "std_belief": 0.07027130573987961
+          },
+          {
+            "neighborhood_id": 2,
+            "neighborhood_name": "maryvale",
+            "education": 0.18,
+            "income": 38000,
+            "population": 980,
+            "adoption_rate": 0.009183673469387756,
+            "mean_belief": 0.20532020926475525,
+            "std_belief": 0.06533784419298172
+          },
+          {
+            "neighborhood_id": 3,
+            "neighborhood_name": "tempe_mesa_border",
+            "education": 0.45,
+            "income": 62000,
+            "population": 857,
+            "adoption_rate": 0.010501750291715286,
+            "mean_belief": 0.20468223094940186,
+            "std_belief": 0.06980859488248825
+          },
+          {
+            "neighborhood_id": 4,
+            "neighborhood_name": "north_scottsdale",
+            "education": 0.72,
+            "income": 105000,
+            "population": 730,
+            "adoption_rate": 0.00821917808219178,
+            "mean_belief": 0.20034892857074738,
+            "std_belief": 0.06228453665971756
+          },
+          {
+            "neighborhood_id": 5,
+            "neighborhood_name": "south_mountain",
+            "education": 0.2,
+            "income": 41000,
+            "population": 831,
+            "adoption_rate": 0.00842358604091456,
+            "mean_belief": 0.20349256694316864,
+            "std_belief": 0.0626656636595726
+          }
+        ],
+        "education_comparison": {
+          "high_education": {
+            "count": 2,
+            "mean_adoption": 0.009406199210587416,
+            "mean_belief": 0.20146654546260834,
+            "neighborhoods": [
+              "paradise_valley",
+              "north_scottsdale"
+            ]
+          },
+          "low_education": {
+            "count": 2,
+            "mean_adoption": 0.008803629755151157,
+            "mean_belief": 0.20440638810396194,
+            "neighborhoods": [
+              "maryvale",
+              "south_mountain"
+            ]
+          },
+          "difference": {
+            "adoption_diff": -0.0006025694554362589,
+            "belief_diff": 0.002939842641353607,
+            "adoption_pct_diff": -6.406088601206954,
+            "belief_pct_diff": 1.459221249167264
+          }
+        }
+      }
+    },
+    "claim_1": {
+      "strain_name": "white_economic_anxiety",
+      "is_truth": false,
+      "by_day": {
+        "0": {
+          "day": 0,
+          "overall": {
+            "mean_adoption": 0.010017664101924654,
+            "std_adoption": 0.0048245226490819795,
+            "min_adoption": 0.0020408163265306124,
+            "max_adoption": 0.016717325227963525,
+            "range_adoption": 0.014676508901432912,
+            "mean_belief": 0.07794632017612457,
+            "std_belief": 0.016991584356590712
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.016717325227963525,
+              "mean_belief": 0.08893141895532608,
+              "std_belief": 0.14008238911628723
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.01059322033898305,
+              "mean_belief": 0.08366306871175766,
+              "std_belief": 0.1253165602684021
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.0020408163265306124,
+              "mean_belief": 0.05123122036457062,
+              "std_belief": 0.09723372757434845
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.010501750291715286,
+              "mean_belief": 0.08833654969930649,
+              "std_belief": 0.1279628425836563
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.00821917808219178,
+              "mean_belief": 0.09306292235851288,
+              "std_belief": 0.12129075825214386
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.012033694344163659,
+              "mean_belief": 0.06245274096727371,
+              "std_belief": 0.12610620260238647
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.009406199210587416,
+              "mean_belief": 0.08836299553513527,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.0070372553353471356,
+              "mean_belief": 0.056841980665922165,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": -0.0023689438752402805,
+              "belief_diff": -0.031521014869213104,
+              "adoption_pct_diff": -25.184921371576397,
+              "belief_pct_diff": -35.672189108482165
+            }
+          }
+        },
+        "25": {
+          "day": 25,
+          "overall": {
+            "mean_adoption": 0.0,
+            "std_adoption": 0.0,
+            "min_adoption": 0.0,
+            "max_adoption": 0.0,
+            "range_adoption": 0.0,
+            "mean_belief": 0.0,
+            "std_belief": 0.0
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": 0.0,
+              "belief_diff": 0.0,
+              "adoption_pct_diff": 0.0,
+              "belief_pct_diff": 0.0
+            }
+          }
+        }
+      },
+      "summary": {
+        "day": 0,
+        "overall": {
+          "mean_adoption": 0.010017664101924654,
+          "std_adoption": 0.0048245226490819795,
+          "min_adoption": 0.0020408163265306124,
+          "max_adoption": 0.016717325227963525,
+          "range_adoption": 0.014676508901432912,
+          "mean_belief": 0.07794632017612457,
+          "std_belief": 0.016991584356590712
+        },
+        "neighborhoods": [
+          {
+            "neighborhood_id": 0,
+            "neighborhood_name": "downtown_core",
+            "education": 0.42,
+            "income": 48000,
+            "population": 658,
+            "adoption_rate": 0.016717325227963525,
+            "mean_belief": 0.08893141895532608,
+            "std_belief": 0.14008238911628723
+          },
+          {
+            "neighborhood_id": 1,
+            "neighborhood_name": "paradise_valley",
+            "education": 0.68,
+            "income": 98000,
+            "population": 944,
+            "adoption_rate": 0.01059322033898305,
+            "mean_belief": 0.08366306871175766,
+            "std_belief": 0.1253165602684021
+          },
+          {
+            "neighborhood_id": 2,
+            "neighborhood_name": "maryvale",
+            "education": 0.18,
+            "income": 38000,
+            "population": 980,
+            "adoption_rate": 0.0020408163265306124,
+            "mean_belief": 0.05123122036457062,
+            "std_belief": 0.09723372757434845
+          },
+          {
+            "neighborhood_id": 3,
+            "neighborhood_name": "tempe_mesa_border",
+            "education": 0.45,
+            "income": 62000,
+            "population": 857,
+            "adoption_rate": 0.010501750291715286,
+            "mean_belief": 0.08833654969930649,
+            "std_belief": 0.1279628425836563
+          },
+          {
+            "neighborhood_id": 4,
+            "neighborhood_name": "north_scottsdale",
+            "education": 0.72,
+            "income": 105000,
+            "population": 730,
+            "adoption_rate": 0.00821917808219178,
+            "mean_belief": 0.09306292235851288,
+            "std_belief": 0.12129075825214386
+          },
+          {
+            "neighborhood_id": 5,
+            "neighborhood_name": "south_mountain",
+            "education": 0.2,
+            "income": 41000,
+            "population": 831,
+            "adoption_rate": 0.012033694344163659,
+            "mean_belief": 0.06245274096727371,
+            "std_belief": 0.12610620260238647
+          }
+        ],
+        "education_comparison": {
+          "high_education": {
+            "count": 2,
+            "mean_adoption": 0.009406199210587416,
+            "mean_belief": 0.08836299553513527,
+            "neighborhoods": [
+              "paradise_valley",
+              "north_scottsdale"
+            ]
+          },
+          "low_education": {
+            "count": 2,
+            "mean_adoption": 0.0070372553353471356,
+            "mean_belief": 0.056841980665922165,
+            "neighborhoods": [
+              "maryvale",
+              "south_mountain"
+            ]
+          },
+          "difference": {
+            "adoption_diff": -0.0023689438752402805,
+            "belief_diff": -0.031521014869213104,
+            "adoption_pct_diff": -25.184921371576397,
+            "belief_pct_diff": -35.672189108482165
+          }
+        }
+      }
+    },
+    "claim_2": {
+      "strain_name": "hispanic_immigration_fear",
+      "is_truth": false,
+      "by_day": {
+        "0": {
+          "day": 0,
+          "overall": {
+            "mean_adoption": 0.009436023144876947,
+            "std_adoption": 0.0037326184877551644,
+            "min_adoption": 0.0048134777376654635,
+            "max_adoption": 0.015889830508474576,
+            "range_adoption": 0.011076352770809112,
+            "mean_belief": 0.06205272674560547,
+            "std_belief": 0.01615139009424198
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.00911854103343465,
+              "mean_belief": 0.05307671055197716,
+              "std_belief": 0.11434650421142578
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.015889830508474576,
+              "mean_belief": 0.05469003692269325,
+              "std_belief": 0.12957116961479187
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.01020408163265306,
+              "mean_belief": 0.08862850069999695,
+              "std_belief": 0.12942545115947723
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.007001166861143524,
+              "mean_belief": 0.04815210402011871,
+              "std_belief": 0.1069672480225563
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.009589041095890411,
+              "mean_belief": 0.05240955203771591,
+              "std_belief": 0.11425534635782242
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.0048134777376654635,
+              "mean_belief": 0.07535945624113083,
+              "std_belief": 0.11356697976589203
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.012739435802182494,
+              "mean_belief": 0.05354979448020458,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.007508779685159262,
+              "mean_belief": 0.08199397847056389,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": -0.0052306561170232324,
+              "belief_diff": 0.028444183990359306,
+              "adoption_pct_diff": -41.058773702734364,
+              "belief_pct_diff": 53.11726079709622
+            }
+          }
+        },
+        "25": {
+          "day": 25,
+          "overall": {
+            "mean_adoption": 0.0,
+            "std_adoption": 0.0,
+            "min_adoption": 0.0,
+            "max_adoption": 0.0,
+            "range_adoption": 0.0,
+            "mean_belief": 0.0,
+            "std_belief": 0.0
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": 0.0,
+              "belief_diff": 0.0,
+              "adoption_pct_diff": 0.0,
+              "belief_pct_diff": 0.0
+            }
+          }
+        }
+      },
+      "summary": {
+        "day": 0,
+        "overall": {
+          "mean_adoption": 0.009436023144876947,
+          "std_adoption": 0.0037326184877551644,
+          "min_adoption": 0.0048134777376654635,
+          "max_adoption": 0.015889830508474576,
+          "range_adoption": 0.011076352770809112,
+          "mean_belief": 0.06205272674560547,
+          "std_belief": 0.01615139009424198
+        },
+        "neighborhoods": [
+          {
+            "neighborhood_id": 0,
+            "neighborhood_name": "downtown_core",
+            "education": 0.42,
+            "income": 48000,
+            "population": 658,
+            "adoption_rate": 0.00911854103343465,
+            "mean_belief": 0.05307671055197716,
+            "std_belief": 0.11434650421142578
+          },
+          {
+            "neighborhood_id": 1,
+            "neighborhood_name": "paradise_valley",
+            "education": 0.68,
+            "income": 98000,
+            "population": 944,
+            "adoption_rate": 0.015889830508474576,
+            "mean_belief": 0.05469003692269325,
+            "std_belief": 0.12957116961479187
+          },
+          {
+            "neighborhood_id": 2,
+            "neighborhood_name": "maryvale",
+            "education": 0.18,
+            "income": 38000,
+            "population": 980,
+            "adoption_rate": 0.01020408163265306,
+            "mean_belief": 0.08862850069999695,
+            "std_belief": 0.12942545115947723
+          },
+          {
+            "neighborhood_id": 3,
+            "neighborhood_name": "tempe_mesa_border",
+            "education": 0.45,
+            "income": 62000,
+            "population": 857,
+            "adoption_rate": 0.007001166861143524,
+            "mean_belief": 0.04815210402011871,
+            "std_belief": 0.1069672480225563
+          },
+          {
+            "neighborhood_id": 4,
+            "neighborhood_name": "north_scottsdale",
+            "education": 0.72,
+            "income": 105000,
+            "population": 730,
+            "adoption_rate": 0.009589041095890411,
+            "mean_belief": 0.05240955203771591,
+            "std_belief": 0.11425534635782242
+          },
+          {
+            "neighborhood_id": 5,
+            "neighborhood_name": "south_mountain",
+            "education": 0.2,
+            "income": 41000,
+            "population": 831,
+            "adoption_rate": 0.0048134777376654635,
+            "mean_belief": 0.07535945624113083,
+            "std_belief": 0.11356697976589203
+          }
+        ],
+        "education_comparison": {
+          "high_education": {
+            "count": 2,
+            "mean_adoption": 0.012739435802182494,
+            "mean_belief": 0.05354979448020458,
+            "neighborhoods": [
+              "paradise_valley",
+              "north_scottsdale"
+            ]
+          },
+          "low_education": {
+            "count": 2,
+            "mean_adoption": 0.007508779685159262,
+            "mean_belief": 0.08199397847056389,
+            "neighborhoods": [
+              "maryvale",
+              "south_mountain"
+            ]
+          },
+          "difference": {
+            "adoption_diff": -0.0052306561170232324,
+            "belief_diff": 0.028444183990359306,
+            "adoption_pct_diff": -41.058773702734364,
+            "belief_pct_diff": 53.11726079709622
+          }
+        }
+      }
+    },
+    "claim_3": {
+      "strain_name": "black_systemic_injustice",
+      "is_truth": false,
+      "by_day": {
+        "0": {
+          "day": 0,
+          "overall": {
+            "mean_adoption": 0.009922241335030585,
+            "std_adoption": 0.002499307274261348,
+            "min_adoption": 0.007415254237288136,
+            "max_adoption": 0.013265306122448979,
+            "range_adoption": 0.005850051885160843,
+            "mean_belief": 0.08340844139456749,
+            "std_belief": 0.006152173580259194
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.007598784194528876,
+              "mean_belief": 0.08205527067184448,
+              "std_belief": 0.12107934057712555
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.007415254237288136,
+              "mean_belief": 0.08266660571098328,
+              "std_belief": 0.11877283453941345
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.013265306122448979,
+              "mean_belief": 0.0882859081029892,
+              "std_belief": 0.1365114450454712
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.010501750291715286,
+              "mean_belief": 0.08663040399551392,
+              "std_belief": 0.1286584734916687
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.012328767123287671,
+              "mean_belief": 0.07220051437616348,
+              "std_belief": 0.12671367824077606
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.00842358604091456,
+              "mean_belief": 0.08861194550991058,
+              "std_belief": 0.12638868391513824
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.009872010680287903,
+              "mean_belief": 0.07743356004357338,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.01084444608168177,
+              "mean_belief": 0.08844892680644989,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": 0.0009724354013938667,
+              "belief_diff": 0.01101536676287651,
+              "adoption_pct_diff": 9.8504289843972,
+              "belief_pct_diff": 14.22557190535725
+            }
+          }
+        },
+        "25": {
+          "day": 25,
+          "overall": {
+            "mean_adoption": 0.0,
+            "std_adoption": 0.0,
+            "min_adoption": 0.0,
+            "max_adoption": 0.0,
+            "range_adoption": 0.0,
+            "mean_belief": 0.0,
+            "std_belief": 0.0
+          },
+          "neighborhoods": [
+            {
+              "neighborhood_id": 0,
+              "neighborhood_name": "downtown_core",
+              "education": 0.42,
+              "income": 48000,
+              "population": 658,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 1,
+              "neighborhood_name": "paradise_valley",
+              "education": 0.68,
+              "income": 98000,
+              "population": 944,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 2,
+              "neighborhood_name": "maryvale",
+              "education": 0.18,
+              "income": 38000,
+              "population": 980,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 3,
+              "neighborhood_name": "tempe_mesa_border",
+              "education": 0.45,
+              "income": 62000,
+              "population": 857,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 4,
+              "neighborhood_name": "north_scottsdale",
+              "education": 0.72,
+              "income": 105000,
+              "population": 730,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            },
+            {
+              "neighborhood_id": 5,
+              "neighborhood_name": "south_mountain",
+              "education": 0.2,
+              "income": 41000,
+              "population": 831,
+              "adoption_rate": 0.0,
+              "mean_belief": 0.0,
+              "std_belief": 0.0
+            }
+          ],
+          "education_comparison": {
+            "high_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "paradise_valley",
+                "north_scottsdale"
+              ]
+            },
+            "low_education": {
+              "count": 2,
+              "mean_adoption": 0.0,
+              "mean_belief": 0.0,
+              "neighborhoods": [
+                "maryvale",
+                "south_mountain"
+              ]
+            },
+            "difference": {
+              "adoption_diff": 0.0,
+              "belief_diff": 0.0,
+              "adoption_pct_diff": 0.0,
+              "belief_pct_diff": 0.0
+            }
+          }
+        }
+      },
+      "summary": {
+        "day": 0,
+        "overall": {
+          "mean_adoption": 0.009922241335030585,
+          "std_adoption": 0.002499307274261348,
+          "min_adoption": 0.007415254237288136,
+          "max_adoption": 0.013265306122448979,
+          "range_adoption": 0.005850051885160843,
+          "mean_belief": 0.08340844139456749,
+          "std_belief": 0.006152173580259194
+        },
+        "neighborhoods": [
+          {
+            "neighborhood_id": 0,
+            "neighborhood_name": "downtown_core",
+            "education": 0.42,
+            "income": 48000,
+            "population": 658,
+            "adoption_rate": 0.007598784194528876,
+            "mean_belief": 0.08205527067184448,
+            "std_belief": 0.12107934057712555
+          },
+          {
+            "neighborhood_id": 1,
+            "neighborhood_name": "paradise_valley",
+            "education": 0.68,
+            "income": 98000,
+            "population": 944,
+            "adoption_rate": 0.007415254237288136,
+            "mean_belief": 0.08266660571098328,
+            "std_belief": 0.11877283453941345
+          },
+          {
+            "neighborhood_id": 2,
+            "neighborhood_name": "maryvale",
+            "education": 0.18,
+            "income": 38000,
+            "population": 980,
+            "adoption_rate": 0.013265306122448979,
+            "mean_belief": 0.0882859081029892,
+            "std_belief": 0.1365114450454712
+          },
+          {
+            "neighborhood_id": 3,
+            "neighborhood_name": "tempe_mesa_border",
+            "education": 0.45,
+            "income": 62000,
+            "population": 857,
+            "adoption_rate": 0.010501750291715286,
+            "mean_belief": 0.08663040399551392,
+            "std_belief": 0.1286584734916687
+          },
+          {
+            "neighborhood_id": 4,
+            "neighborhood_name": "north_scottsdale",
+            "education": 0.72,
+            "income": 105000,
+            "population": 730,
+            "adoption_rate": 0.012328767123287671,
+            "mean_belief": 0.07220051437616348,
+            "std_belief": 0.12671367824077606
+          },
+          {
+            "neighborhood_id": 5,
+            "neighborhood_name": "south_mountain",
+            "education": 0.2,
+            "income": 41000,
+            "population": 831,
+            "adoption_rate": 0.00842358604091456,
+            "mean_belief": 0.08861194550991058,
+            "std_belief": 0.12638868391513824
+          }
+        ],
+        "education_comparison": {
+          "high_education": {
+            "count": 2,
+            "mean_adoption": 0.009872010680287903,
+            "mean_belief": 0.07743356004357338,
+            "neighborhoods": [
+              "paradise_valley",
+              "north_scottsdale"
+            ]
+          },
+          "low_education": {
+            "count": 2,
+            "mean_adoption": 0.01084444608168177,
+            "mean_belief": 0.08844892680644989,
+            "neighborhoods": [
+              "maryvale",
+              "south_mountain"
+            ]
+          },
+          "difference": {
+            "adoption_diff": 0.0009724354013938667,
+            "belief_diff": 0.01101536676287651,
+            "adoption_pct_diff": 9.8504289843972,
+            "belief_pct_diff": 14.22557190535725
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "literature_aligned": [
+    {
+      "name": "baseline_literature_aligned",
+      "path": "literature_aligned_runs/baseline_literature_aligned",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_literature_aligned",
+      "path": "literature_aligned_runs/phoenix_literature_aligned",
+      "has_snapshots": true,
+      "has_summary": true
+    }
+  ],
+  "world_simulations_batch": [
+    {
+      "name": "world_low_trust_gov",
+      "path": "world_simulations_20260101_000522/world_low_trust_gov",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_outrage_algorithm",
+      "path": "world_simulations_20260101_000522/world_outrage_algorithm",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_high_religion_hub",
+      "path": "world_simulations_20260101_000522/world_high_religion_hub",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_high_trust_gov",
+      "path": "world_simulations_20260101_000522/world_high_trust_gov",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_strong_moderation",
+      "path": "world_simulations_20260101_000522/world_strong_moderation",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_baseline",
+      "path": "world_simulations_20260101_000522/world_baseline",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_phoenix",
+      "path": "world_simulations_20260101_000522/world_phoenix",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_collapsed_local_media",
+      "path": "world_simulations_20260101_000522/world_collapsed_local_media",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_with_misinfo",
+      "path": "world_simulations_20260101_000522/phoenix_with_misinfo",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_phoenix_multi_misinformation",
+      "path": "world_simulations_20260101_000522/world_phoenix_multi_misinformation",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "world_phoenix_truth_random",
+      "path": "world_simulations_20260101_000522/world_phoenix_truth_random",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_test",
+      "path": "world_simulations_20260101_000522/phoenix_test",
+      "has_snapshots": true,
+      "has_summary": true
+    }
+  ],
+  "phoenix_runs": [
+    {
+      "name": "phoenix_neighborhood_test",
+      "path": "phoenix_neighborhood_test",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_large_10k_per_neighborhood",
+      "path": "phoenix_large_10k_per_neighborhood",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_with_misinfo",
+      "path": "phoenix_with_misinfo",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_detailed",
+      "path": "phoenix_detailed",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_run",
+      "path": "phoenix_run",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_misinfo",
+      "path": "phoenix_misinfo",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "phoenix_test",
+      "path": "phoenix_test",
+      "has_snapshots": true,
+      "has_summary": true
+    }
+  ],
+  "other": [
+    {
+      "name": "high_religion_hub",
+      "path": "high_religion_hub",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "collapsed_local_media",
+      "path": "collapsed_local_media",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "high_trust_gov",
+      "path": "high_trust_gov",
+      "has_snapshots": true,
+      "has_summary": true
+    },
+    {
+      "name": "baseline",
+      "path": "baseline",
+      "has_snapshots": true,
+      "has_summary": true
+    }
+  ]
+}

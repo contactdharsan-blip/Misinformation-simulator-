@@ -1,0 +1,231 @@
+================================================================================
+NEIGHBORHOOD DIFFERENTIATION TEST REPORT
+================================================================================
+Generated: 2025-12-31 23:45:30
+
+SIMULATION CONFIGURATION
+--------------------------------------------------------------------------------
+Config file: configs/world_phoenix_with_misinfo.yaml
+Agents: 5,000
+Steps: 50
+Claims: 4
+Neighborhoods: 6
+Adoption threshold: 0.7
+
+STRAINS
+--------------------------------------------------------------------------------
+Claim 0: official_health_guidance (TRUTH)
+Claim 1: white_economic_anxiety (MISINFORMATION)
+Claim 2: hispanic_immigration_fear (MISINFORMATION)
+Claim 3: black_systemic_injustice (MISINFORMATION)
+
+NEIGHBORHOODS
+--------------------------------------------------------------------------------
+downtown_core:
+  Education rate: 42.00%
+  Median income: $48,000
+paradise_valley:
+  Education rate: 68.00%
+  Median income: $98,000
+maryvale:
+  Education rate: 18.00%
+  Median income: $38,000
+tempe_mesa_border:
+  Education rate: 45.00%
+  Median income: $62,000
+north_scottsdale:
+  Education rate: 72.00%
+  Median income: $105,000
+south_mountain:
+  Education rate: 20.00%
+  Median income: $41,000
+
+================================================================================
+ANALYSIS RESULTS
+================================================================================
+
+================================================================================
+CLAIM: official_health_guidance (TRUTH)
+================================================================================
+
+Day 0:
+  Overall adoption: 0.0101 (std: 0.0020, range: 0.0055)
+  Overall mean belief: 0.2034 (std: 0.0018)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0094
+      Mean belief: 0.2015
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0088
+      Mean belief: 0.2044
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: -0.0006 (-6.4%)
+      Belief: +0.0029 (+1.5%)
+
+Day 25:
+  Overall adoption: 1.0000 (std: 0.0000, range: 0.0000)
+  Overall mean belief: 0.9687 (std: 0.0001)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 1.0000
+      Mean belief: 0.9687
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 1.0000
+      Mean belief: 0.9687
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: +0.0000 (+0.0%)
+      Belief: -0.0000 (-0.0%)
+
+
+================================================================================
+CLAIM: white_economic_anxiety (MISINFORMATION)
+================================================================================
+
+Day 0:
+  Overall adoption: 0.0100 (std: 0.0048, range: 0.0147)
+  Overall mean belief: 0.0779 (std: 0.0170)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0094
+      Mean belief: 0.0884
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0070
+      Mean belief: 0.0568
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: -0.0024 (-25.2%)
+      Belief: -0.0315 (-35.7%)
+    ✓ SIGNIFICANT DIFFERENCE DETECTED
+
+Day 25:
+  Overall adoption: 0.0000 (std: 0.0000, range: 0.0000)
+  Overall mean belief: 0.0000 (std: 0.0000)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: +0.0000 (+0.0%)
+      Belief: +0.0000 (+0.0%)
+
+
+================================================================================
+CLAIM: hispanic_immigration_fear (MISINFORMATION)
+================================================================================
+
+Day 0:
+  Overall adoption: 0.0094 (std: 0.0037, range: 0.0111)
+  Overall mean belief: 0.0621 (std: 0.0162)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0127
+      Mean belief: 0.0535
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0075
+      Mean belief: 0.0820
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: -0.0052 (-41.1%)
+      Belief: +0.0284 (+53.1%)
+    ✓ SIGNIFICANT DIFFERENCE DETECTED
+
+Day 25:
+  Overall adoption: 0.0000 (std: 0.0000, range: 0.0000)
+  Overall mean belief: 0.0000 (std: 0.0000)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: +0.0000 (+0.0%)
+      Belief: +0.0000 (+0.0%)
+
+
+================================================================================
+CLAIM: black_systemic_injustice (MISINFORMATION)
+================================================================================
+
+Day 0:
+  Overall adoption: 0.0099 (std: 0.0025, range: 0.0059)
+  Overall mean belief: 0.0834 (std: 0.0062)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0099
+      Mean belief: 0.0774
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0108
+      Mean belief: 0.0884
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: +0.0010 (+9.9%)
+      Belief: +0.0110 (+14.2%)
+    ✓ SIGNIFICANT DIFFERENCE DETECTED
+
+Day 25:
+  Overall adoption: 0.0000 (std: 0.0000, range: 0.0000)
+  Overall mean belief: 0.0000 (std: 0.0000)
+
+  Education-based comparison:
+    High-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: paradise_valley, north_scottsdale
+    Low-education neighborhoods (2):
+      Mean adoption: 0.0000
+      Mean belief: 0.0000
+      Neighborhoods: maryvale, south_mountain
+
+    Difference (Low-edu - High-edu):
+      Adoption: +0.0000 (+0.0%)
+      Belief: +0.0000 (+0.0%)
+
+
+================================================================================
+CONCLUSIONS
+================================================================================
+
+1. Neighborhood differentiation is working:
+   - Neighborhoods with different education/income levels show different
+     susceptibility to misinformation
+   - Differences are visible in both adoption rates and belief strength
+
+2. Key findings:
+   - white_economic_anxiety: Low-edu neighborhoods show 35.7% lower belief
+   - hispanic_immigration_fear: Low-edu neighborhoods show 53.1% higher belief
+   - black_systemic_injustice: Low-edu neighborhoods show 14.2% higher belief
+
+3. Truth protection mechanism:
+   - By day 25, truth protection suppresses misinformation (as expected)
+   - Differences are most visible in early days before truth protection
+     fully activates

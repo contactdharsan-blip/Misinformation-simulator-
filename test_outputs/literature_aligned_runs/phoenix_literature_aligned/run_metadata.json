@@ -1,0 +1,16 @@
+{
+  "python_version": "3.11.9",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "torch_version": "2.9.1",
+  "cuda_available": "False",
+  "device": "cpu",
+  "numpy_version": "2.3.5",
+  "pandas_version": "2.3.3",
+  "networkx_version": "3.6.1",
+  "pyarrow_version": "22.0.0",
+  "streamlit_version": "unknown",
+  "sim_version": "unknown",
+  "git_commit": "0dadd7ea7ab7271b1f151dc6a1f9e106889dc36d",
+  "seed": "42",
+  "deterministic": "True"
+}

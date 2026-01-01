@@ -1,0 +1,20 @@
+Simulation Run Summary
+================================================================================
+Run timestamp: 20260101_000522
+Total simulations: 12
+Successful: 12
+Failed: 0
+
+Results:
+  ✓ world_baseline
+  ✓ world_high_trust_gov
+  ✓ world_low_trust_gov
+  ✓ world_strong_moderation
+  ✓ world_collapsed_local_media
+  ✓ world_high_religion_hub
+  ✓ world_outrage_algorithm
+  ✓ world_phoenix
+  ✓ world_phoenix_multi_misinformation
+  ✓ world_phoenix_truth_random
+  ✓ phoenix_with_misinfo
+  ✓ phoenix_test
