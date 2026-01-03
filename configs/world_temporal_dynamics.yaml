@@ -41,10 +41,11 @@ belief_update:
   exposure_memory_decay: 0.7  # Faster memory decay
 
 sharing:
-  # Faster initial spread velocity
-  base_share_rate: 0.02  # Faster initial spread
-  belief_sensitivity: 2.3
-  emotion_sensitivity: 0.7
+  # Refined temporal dynamics (PLOS ONE 0207383)
+  # Balanced for realistic spread velocity without abrupt jumps
+  base_share_rate: 0.014  # Reduced from 0.02 (more gradual spread)
+  belief_sensitivity: 2.1  # Reduced from 2.3
+  emotion_sensitivity: 0.65  # Reduced from 0.7
   status_sensitivity: 0.55
   conformity_sensitivity: 0.45
   moderation_risk_sensitivity: 0.5

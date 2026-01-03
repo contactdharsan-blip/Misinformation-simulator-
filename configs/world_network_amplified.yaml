@@ -52,10 +52,11 @@ world:
   platform_friction: 0.15  # Lower friction
 
 sharing:
-  # Higher base share rate in network-amplified environment
-  base_share_rate: 0.022
-  belief_sensitivity: 2.4
-  emotion_sensitivity: 0.75  # Strong emotional triggers
+  # Refined for network-amplified environment (IEEE 8576937)
+  # Still higher than baseline but reduced for more gradual spread
+  base_share_rate: 0.016  # Reduced from 0.022 (more gradual spread)
+  belief_sensitivity: 2.2  # Reduced from 2.4
+  emotion_sensitivity: 0.7  # Reduced from 0.75 (still strong but more balanced)
   status_sensitivity: 0.6
   conformity_sensitivity: 0.5
   moderation_risk_sensitivity: 0.4  # Lower sensitivity to moderation

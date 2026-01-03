@@ -62,9 +62,10 @@ belief_update:
   delta: 0.6  # Increased conformity
 
 sharing:
-  # Higher sharing within communities
-  base_share_rate: 0.02
-  belief_sensitivity: 2.5
-  emotion_sensitivity: 0.7
+  # Refined for community structure (Springer s13278-020-00696-x)
+  # Higher sharing within communities but more gradual
+  base_share_rate: 0.015  # Reduced from 0.02 (more gradual spread)
+  belief_sensitivity: 2.3  # Reduced from 2.5
+  emotion_sensitivity: 0.65  # Reduced from 0.7
   conformity_sensitivity: 0.5  # Stronger conformity effects
   status_sensitivity: 0.6
