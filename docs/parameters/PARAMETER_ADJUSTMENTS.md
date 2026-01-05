@@ -106,7 +106,20 @@ decay_rate = 0.92  # Adjust this (0.85-0.95 recommended)
 - After ~30 days, misinformation beliefs would decay to ~10% of original value
 - This allows for sustained misinformation presence while still showing truth protection effects
 
-## Expected Outcomes
+### 6. Dual-Process Parameters ✓
+**Files**: `sim/config.py` lines 319-348
+
+**Implementation**:
+- `s1_emotional_weight`: 0.4 (Dominance of emotion in early stage)
+- `deliberation_threshold`: 0.4 (Belief uncertainty trigger for System 2)
+- `cognitive_load_s1_boost`: 0.3 (Load shifts processing to System 1)
+
+### 7. Engagement Fatigue (Restrained State) ✓
+**File**: `sim/simulation.py` lines 271-274
+
+**Implementation**: 
+- Agents become **Restrained** after 3 shares per claim.
+- Share probability is reduced by 90% (multiplied by 0.1) once restrained.
 
 After these changes:
 - **Spread pattern**: Gradual S-curve over 14-28 days (not 6-9 days)

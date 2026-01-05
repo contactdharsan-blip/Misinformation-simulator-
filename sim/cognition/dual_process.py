@@ -97,6 +97,9 @@ class CognitiveState:
     # Override history (times S2 overrode S1)
     override_count: torch.Tensor = field(init=False)
 
+    # Doubtful state (agents who are uncertain)
+    is_doubtful: torch.Tensor = field(init=False)
+
     def __post_init__(self):
         self.s1_tendency = torch.zeros(self.n_agents, device=self.device)
         self.cognitive_load = torch.zeros(self.n_agents, device=self.device)
@@ -113,7 +116,11 @@ class CognitiveState:
         self.conflict_history = torch.zeros(
             (self.n_agents, self.n_claims), device=self.device
         )
+        # Override history (times S2 overrode S1)
         self.override_count = torch.zeros(self.n_agents, device=self.device)
+
+        # Initialize doubtful state
+        self.is_doubtful = torch.zeros((self.n_agents, self.n_claims), device=self.device, dtype=torch.bool)
 
 
 def initialize_cognitive_states(
@@ -206,6 +213,10 @@ def compute_processing_mode(
     # Prior conflict detection increases S2 vigilance
     conflict_vigilance = 0.1 * state.conflict_history
     s1_weight = s1_weight - conflict_vigilance
+
+    # Doubtful state triggers S2 (lower S1 weight)
+    doubt_effect = 0.2 * state.is_doubtful.float()
+    s1_weight = s1_weight - doubt_effect
 
     return torch.clamp(s1_weight, 0.1, 0.95)
 
@@ -376,3 +387,29 @@ def update_cognitive_load(
         state.cognitive_load + load_increase - load_decay,
         0.0, 1.0
     )
+
+
+def update_doubtful_state(
+    state: CognitiveState,
+    beliefs: torch.Tensor,
+    cfg: DualProcessConfig,
+) -> None:
+    """
+    Update the doubtful state for each agent-claim pair.
+
+    Agents are considered doubtful if:
+    1. Their belief is near 0.5 (maximal uncertainty).
+    2. They have a history of S1/S2 conflict for this claim.
+    """
+    # Belief uncertainty: 1.0 at 0.5, 0.0 at 0.0 or 1.0
+    uncertainty = 1.0 - 2.0 * torch.abs(beliefs - 0.5)
+
+    # Threshold for doubt
+    doubt_threshold = 0.7  # High uncertainty
+    is_uncertain = uncertainty > doubt_threshold
+
+    # High conflict history also contributes to doubt
+    is_conflicted = state.conflict_history > cfg.conflict_detection_threshold
+
+    # Update doubtful state
+    state.is_doubtful = is_uncertain | is_conflicted

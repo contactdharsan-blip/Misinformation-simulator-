@@ -18,6 +18,13 @@ from sim.disease.exposure import (
     compute_social_exposure,
     compute_social_proof,
 )
+from sim.cognition.dual_process import (
+    initialize_cognitive_states,
+    compute_processing_mode,
+    update_doubtful_state,
+    update_cognitive_load,
+    update_familiarity,
+)
 from sim.disease.sharing import compute_share_probabilities
 from sim.disease.operator import load_operator
 from sim.disease.strains import load_strains, mutate_strains
@@ -141,6 +148,11 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
     baseline = torch.full_like(beliefs, fill_value=cfg.belief_update.baseline_belief)
     exposure_memory = torch.zeros_like(beliefs)
     
+    # Track sharing fatigue (Restrained state in SEDPNR)
+    # Shape: (n_agents, n_claims), counts total shares per claim
+    share_count = torch.zeros_like(beliefs)
+    restrained_mask = torch.zeros_like(beliefs, dtype=torch.bool)
+    
     # Track which agents have ever adopted truth (for persistent protection)
     truth_adopters_mask = torch.zeros(n_agents, dtype=torch.bool, device=device)
 
@@ -163,6 +175,11 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
     if cfg.world.emotions_enabled and town.traits.emotions:
         emotions = {k: torch.tensor(v, device=device) for k, v in town.traits.emotions.items()}
 
+    # Initialize cognitive states for dual-process architecture
+    cog_state = initialize_cognitive_states(
+        n_agents, n_claims, traits, cfg.dual_process, device
+    )
+
     trust = {
         "trust_gov": torch.tensor(town.trust.trust_gov, device=device),
         "trust_church": torch.tensor(town.trust.trust_church, device=device),
@@ -176,6 +193,9 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
     ideology = torch.tensor(town.ideology, device=device)
     alignment_targets = torch.tensor(claim_alignment(strains), device=device)
     match = 1 - torch.abs(ideology.unsqueeze(1) - alignment_targets.unsqueeze(0))
+
+    # Pre-compute ages_tensor for sharing probabilities
+    ages_tensor = torch.tensor(town.demographics.age, device=device, dtype=torch.float32)
 
     adoption_threshold = cfg.sim.adoption_threshold
     communities = detect_communities(src_idx, dst_idx, n_agents, cfg.metrics)
@@ -232,15 +252,31 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
                     1.0, cfg.world.debunk_intensity * (1 + cfg.world.intervention_strength)
                 )
 
-        # Get ages for age-based sharing multiplier
-        ages_tensor = torch.tensor(town.demographics.age, device=device, dtype=torch.float32)
+        # Apply sharing fatigue (restrained state)
+        # Reducing share probability for agents who have shared too much
+        restrained_penalty = torch.where(restrained_mask, 0.1, 1.0)
         
-        share_probs = compute_share_probabilities(
+        share_probs_pos, share_probs_neg = compute_share_probabilities(
             beliefs, traits, emotions, cfg.sharing, world_effective, strains, ages=ages_tensor
         )
-        share_probs, warnings = apply_moderation(share_probs, strains, world_effective, cfg.moderation)
+        share_probs_pos = share_probs_pos * restrained_penalty
+        # Negative sharing also fatigues but perhaps slower
+        share_probs_neg = share_probs_neg * (0.5 + 0.5 * restrained_penalty)
 
-        shares = torch.bernoulli(share_probs, generator=rng_manager.torch(device))
+        share_probs_pos, share_probs_neg, warnings = apply_moderation(
+            share_probs_pos, share_probs_neg, strains, world_effective, cfg.moderation
+        )
+
+        shares_pos = torch.bernoulli(share_probs_pos, generator=rng_manager.torch(device))
+        shares_neg = torch.bernoulli(share_probs_neg, generator=rng_manager.torch(device))
+        
+        # Total shares for exposure calculation
+        shares = shares_pos + shares_neg
+        
+        # Update share counts and restrained state (positive shares drive fatigue more)
+        share_count = share_count + shares_pos + 0.5 * shares_neg
+        # Agents become 'Restrained' after sharing a claim more than 3 times (SEDPNR nuance)
+        restrained_mask = share_count >= 3
 
         social_exposure = compute_social_exposure(shares, edge_tensors, n_agents)
         social_proof = compute_social_proof(
@@ -278,6 +314,17 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         if strains is not None and hasattr(town, 'cultural_groups'):
             cultural_groups_tensor = torch.tensor(town.cultural_groups, device=device, dtype=torch.long)
             cultural_match = cultural_matching_bonus(strains, cultural_groups_tensor, device)
+
+        # Update cognitive states before belief update
+        update_doubtful_state(cog_state, beliefs, cfg.dual_process)
+        update_familiarity(cog_state, total_exposure, cfg.dual_process)
+        
+        # Determine processing mode (S1 vs S2)
+        # Identity threat here is approximated by ideological mismatch
+        identity_threat = 1.0 - match
+        processing_mode = compute_processing_mode(
+            cog_state, total_exposure, identity_threat, cfg.dual_process
+        )
 
         beliefs, exposure_memory = update_beliefs(
             beliefs,
@@ -320,13 +367,17 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
                             decay_rate = 0.92  # 8% reduction per day (slower decay)
                             beliefs[truth_adopter_indices[:, None], non_truth_cols.unsqueeze(0).expand(len(truth_adopter_indices), -1)] *= decay_rate
 
+        # Update cognitive load based on processing intensity
+        update_cognitive_load(cog_state, total_exposure)
+        
         trust = update_trust(trust, beliefs, debunk_pressure, world_effective)
 
-        # Save snapshots at intervals and specifically at day 25
+        # Save snapshots at intervals, day 0, 25, and the final day
         snapshot_interval = getattr(cfg.sim, "snapshot_interval", 30)
+        is_final_day = (day == cfg.sim.n_steps - 1)
         should_snapshot = (
             cfg.output.save_snapshots 
-            and (day == 0 or day == 25 or (day + 1) % snapshot_interval == 0)
+            and (day == 0 or day == 25 or (day + 1) % snapshot_interval == 0 or is_final_day)
         )
         if should_snapshot:
             belief_cpu = beliefs.detach().cpu().numpy()
@@ -385,15 +436,15 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         plots_dir = out_dir / "plots"
         plots_dir.mkdir(exist_ok=True)
         
-        # Target day for all plots
-        target_day = 25
+        # Target day for all plots: use the actual max day reached
+        target_day = int(metrics_df["day"].max())
         
-        # Filter metrics to day 25
-        metrics_day25 = metrics_df[metrics_df["day"] <= target_day].copy()
+        # Filter metrics to target_day
+        metrics_filtered = metrics_df[metrics_df["day"] <= target_day].copy()
         
-        # Generate all plots up to day 25
-        plot_adoption_curves(metrics_day25, plots_dir, strain_names=initial_strain_names, max_day=target_day)
-        plot_polarization(metrics_day25, plots_dir, strain_names=initial_strain_names, max_day=target_day)
+        # Generate all plots up to target_day
+        plot_adoption_curves(metrics_filtered, plots_dir, strain_names=initial_strain_names, max_day=target_day)
+        plot_polarization(metrics_filtered, plots_dir, strain_names=initial_strain_names, max_day=target_day)
         
         if not snapshots_df.empty:
             # Get snapshot at day 25 (or closest)

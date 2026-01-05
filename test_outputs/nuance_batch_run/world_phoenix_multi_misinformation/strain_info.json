@@ -1,0 +1,9 @@
+{
+  "initial_strains": [
+    "official_health_guidance",
+    "health_panic_misinformation",
+    "conspiracy_misinformation",
+    "general_misinformation"
+  ],
+  "note": "Mutations create new strains but are not tracked as separate claims due to fixed tensor size"
+}

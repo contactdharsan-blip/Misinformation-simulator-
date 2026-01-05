@@ -36,8 +36,8 @@ All documentation is organized in the `docs/` folder:
 - Truth virality: 0.05 (maintains 6x ratio)
 - Adoption threshold: 0.75 (75%)
 - Truth protection decay: 0.92 (8% per day)
-
-See [Parameter Adjustments](docs/parameters/PARAMETER_ADJUSTMENTS.md) for details.
+- **Nuance Model**: Dual-Process (Kahneman) + SEDPNR (Nature 2024)
+- **Restrained Threshold**: 3 shares (Engagement fatigue)
 
 ## License
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import torch
 
@@ -16,17 +16,27 @@ def compute_share_probabilities(
     world_cfg: WorldConfig,
     strains: List[Strain],
     ages: torch.Tensor | None = None,
-) -> torch.Tensor:
+) -> Tuple[torch.Tensor, torch.Tensor]:
     """Compute per-agent share probabilities for each claim.
     
-    Based on Guess et al. (2019): Older adults (65+) share 7x more than young adults.
+    Returns:
+        (prob_positive, prob_negative): Dual-channel sharing probabilities.
     """
     base = torch.full_like(beliefs, fill_value=sharing_cfg.base_share_rate)
-    logit = torch.log(base / (1 - base))
+    
+    # Positive sharing (believing and spreading)
+    logit_pos = torch.log(base / (1 - base))
+    logit_pos = logit_pos + sharing_cfg.belief_sensitivity * (beliefs - 0.5)
 
-    logit = logit + sharing_cfg.belief_sensitivity * (beliefs - 0.5)
-    logit = logit + sharing_cfg.status_sensitivity * traits["status_seeking"].unsqueeze(1)
-    logit = logit + sharing_cfg.conformity_sensitivity * traits["conformity"].unsqueeze(1)
+    # Negative sharing (debunking, criticizing, or warning)
+    # Driven by skepticism and low belief
+    logit_neg = torch.log(base / (1 - base))
+    logit_neg = logit_neg + sharing_cfg.belief_sensitivity * (0.5 - beliefs)
+    logit_neg = logit_neg + 2.0 * traits["skepticism"].unsqueeze(1)
+    logit_pos = logit_pos + sharing_cfg.status_sensitivity * traits["status_seeking"].unsqueeze(1)
+    logit_pos = logit_pos + sharing_cfg.conformity_sensitivity * traits["conformity"].unsqueeze(1)
+    
+    logit_neg = logit_neg + sharing_cfg.status_sensitivity * traits["status_seeking"].unsqueeze(1)
     
     # Age-based sharing multiplier (Guess et al., 2019: 65+ share 7x more than 18-29)
     if ages is not None:
@@ -38,7 +48,8 @@ def compute_share_probabilities(
         age_multiplier[(ages >= 55) & (ages < 65)] = 4.0  # Older adults
         age_multiplier[ages >= 65] = 7.0  # Seniors (65+) share 7x more (Guess et al., 2019)
         # Apply age multiplier to logit scale (additive on logit = multiplicative on probability)
-        logit = logit + torch.log(age_multiplier).unsqueeze(1)
+        logit_pos = logit_pos + torch.log(age_multiplier).unsqueeze(1)
+        logit_neg = logit_neg + torch.log(age_multiplier).unsqueeze(1)
 
     if emotions:
         fear = emotions["fear"].unsqueeze(1)
@@ -52,16 +63,26 @@ def compute_share_probabilities(
             dtype=beliefs.dtype,
         )
         emotion_score = fear * weights[:, 0] + anger * weights[:, 1] + hope * weights[:, 2]
-        logit = logit + sharing_cfg.emotion_sensitivity * emotion_score
+        logit_pos = logit_pos + sharing_cfg.emotion_sensitivity * emotion_score
+        
+        # Negative sharing is also driven by anger/fear (outrage at the rumor)
+        logit_neg = logit_neg + sharing_cfg.emotion_sensitivity * (fear * 0.5 + anger * 0.8)
 
     violation = torch.tensor([s.violation_risk for s in strains], device=beliefs.device, dtype=beliefs.dtype)
     moderation_penalty = sharing_cfg.moderation_risk_sensitivity * violation * world_cfg.moderation_strictness
-    logit = logit - moderation_penalty
-    logit = logit - world_cfg.platform_friction
+    logit_pos = logit_pos - moderation_penalty
+    logit_pos = logit_pos - world_cfg.platform_friction
+    
+    logit_neg = logit_neg - world_cfg.platform_friction
 
-    probs = torch.sigmoid(logit)
-    # Apply per-strain virality multiplier (allows truth to spread slower)
+    probs_pos = torch.sigmoid(logit_pos)
+    probs_neg = torch.sigmoid(logit_neg)
+    
+    # Apply per-strain virality multiplier
     virality = torch.tensor([s.virality for s in strains], device=beliefs.device, dtype=beliefs.dtype)
-    probs = probs * virality.unsqueeze(0)
-    return torch.clamp(probs, 0.0, 1.0)
+    probs_pos = probs_pos * virality.unsqueeze(0)
+    # Negative sharing is less sensitive to virality but still influenced
+    probs_neg = probs_neg * (0.5 + 0.5 * virality.unsqueeze(0))
+    
+    return torch.clamp(probs_pos, 0.0, 1.0), torch.clamp(probs_neg, 0.0, 1.0)
 

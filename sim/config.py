@@ -316,6 +316,39 @@ class BeliefUpdateConfig(BaseModel):
     reactance_strength: float = 0.3
 
 
+class DualProcessConfig(BaseModel):
+    """Configuration for dual-process cognitive model."""
+    model_config = ConfigDict(extra="allow")
+    
+    # System 1 parameters
+    s1_emotional_weight: float = 0.4
+    s1_familiarity_weight: float = 0.3
+    s1_narrative_weight: float = 0.3
+    s1_novelty_penalty: float = 0.2
+    s1_fluency_boost: float = 0.15
+
+    # System 2 parameters
+    s2_evidence_weight: float = 0.35
+    s2_source_weight: float = 0.3
+    s2_consistency_weight: float = 0.25
+    s2_complexity_penalty: float = 0.1
+
+    # Integration parameters
+    base_s1_tendency: float = 0.6
+    cognitive_load_s1_boost: float = 0.3
+    stakes_s2_boost: float = 0.25
+    need_for_cognition_s2_boost: float = 0.2
+
+    # Thresholds
+    deliberation_threshold: float = 0.4
+    override_threshold: float = 0.7
+    conflict_detection_threshold: float = 0.3
+
+    # Temporal dynamics
+    familiarity_decay: float = 0.95
+    fluency_learning_rate: float = 0.1
+
+
 class SharingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
     base_share_rate: float = 0.015  # Base probability of sharing (further reduced for more gradual spread)
@@ -413,6 +446,7 @@ class SimulationConfig(BaseModel):
     world: WorldConfig = WorldConfig()
     belief_update: BeliefUpdateConfig = BeliefUpdateConfig()
     sharing: SharingConfig = SharingConfig()
+    dual_process: DualProcessConfig = DualProcessConfig()
     moderation: ModerationConfig = ModerationConfig()
     strains: List[StrainConfig] = Field(default_factory=list)
     metrics: MetricsConfig = MetricsConfig()

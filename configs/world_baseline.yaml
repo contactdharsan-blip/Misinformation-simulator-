@@ -103,6 +103,18 @@ sharing:
   conformity_sensitivity: 0.4
   moderation_risk_sensitivity: 0.5
 
+dual_process:
+  s1_emotional_weight: 0.4
+  s1_familiarity_weight: 0.3
+  s1_narrative_weight: 0.3
+  s2_evidence_weight: 0.35
+  s2_source_weight: 0.3
+  s2_consistency_weight: 0.25
+  base_s1_tendency: 0.6
+  deliberation_threshold: 0.4
+  override_threshold: 0.7
+  conflict_detection_threshold: 0.3
+
 moderation:
   warning_effect: 0.35
   downrank_effect: 0.4

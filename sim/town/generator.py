@@ -160,6 +160,12 @@ def generate_town(
         
         # Update demographics with ethnicity
         demographics.ethnicity = ethnicity
+    else:
+        # Fallback: assign random ethnicity if not provided (to enable demographic plots)
+        ethnicity_labels = ['white', 'hispanic', 'black', 'asian', 'other']
+        # Use a realistic US-like default distribution
+        ethnicity = rng.choice(ethnicity_labels, size=n_agents, p=[0.60, 0.18, 0.12, 0.06, 0.04])
+        demographics.ethnicity = ethnicity
     
     # Assign cultural groups based on neighborhood cultural composition
     cultural_groups = np.zeros(n_agents, dtype=np.int32)
