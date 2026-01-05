@@ -31,12 +31,14 @@ All documentation is organized in the `docs/` folder:
 
 ## Current Parameter Values
 
-- Base share rate: 0.015 (1.5%)
-- Misinformation virality: 0.3
-- Truth virality: 0.05 (maintains 6x ratio)
-- Adoption threshold: 0.75 (75%)
-- Truth protection decay: 0.92 (8% per day)
-- **Nuance Model**: Dual-Process (Kahneman) + SEDPNR (Nature 2024)
+- **Base share rate**: 0.012 (1.2%)
+- **Misinformation virality**: 0.3
+- **Truth virality**: 0.05 (maintains 6x ratio)
+- **Adoption threshold**: 0.8 (80%)
+- **Truth protection decay**: 0.92 (8% per day)
+- **State Model**: SEDPNR (Nature 2024 calibrated)
+- **Cognition**: Dual-Process (System 1/2) with identity threat detection
+- **Demographics**: Biased media diets by age/ethnicity
 - **Restrained Threshold**: 3 shares (Engagement fatigue)
 
 ## License

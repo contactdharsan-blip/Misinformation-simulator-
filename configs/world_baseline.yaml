@@ -8,7 +8,7 @@ sim:
   deterministic: true
   seed_fraction: 0.001
   # Increased adoption threshold for more gradual spread (PLOS ONE 0207383)
-  adoption_threshold: 0.8  # Maintained at 0.8 for realistic adoption patterns
+  adoption_threshold: 0.7  # Lowered from 0.8 for faster adoption spikes
 
 town:
   n_neighborhoods: 12
@@ -95,7 +95,7 @@ belief_update:
 sharing:
   # Base share rate further refined to reduce abrupt spread (PLOS ONE 0207383)
   # Reduced to create more gradual S-curves matching research
-  base_share_rate: 0.012  # Further reduced from 0.018 (more gradual spread)
+  base_share_rate: 0.02  # Increased from 0.012 for sharper spikes
   belief_sensitivity: 2.0  # Reduced from 2.2 (less belief-driven sharing)
   # Emotional triggers refined (PLOS ONE 0207383)
   emotion_sensitivity: 0.6  # Refined from 0.65 (balanced emotional effects)
@@ -115,6 +115,18 @@ dual_process:
   override_threshold: 0.7
   conflict_detection_threshold: 0.3
 
+sedpnr:
+  alpha: 0.1      # S -> E transition rate
+  gamma: 0.1      # E -> D transition rate
+  beta_pos_e: 0.5 # E -> P transition rate
+  beta_neg_e: 0.4 # E -> N transition rate
+  beta_pos_d: 0.5 # D -> P transition rate
+  beta_neg_d: 0.6 # D -> N transition rate
+  lambda_p: 0.01  # P -> R transition rate
+  lambda_n: 0.01  # N -> R transition rate
+  mu_e: 0.05      # E -> S transition rate
+  mu_d: 0.05      # D -> S transition rate
+
 moderation:
   warning_effect: 0.35
   downrank_effect: 0.4
@@ -124,7 +136,7 @@ strains:
   # Updated to align with research findings (IEEE 8576937, PLOS ONE 0207383)
   - name: silver_river
     topic: health_rumor
-    memeticity: 0.35  # Reduced from 0.55 (more gradual spread)
+    memeticity: 0.5  # Increased from 0.35
     emotional_profile: {fear: 0.6, anger: 0.2, hope: 0.2}
     falsifiability: 0.7
     stealth: 0.4
@@ -132,7 +144,7 @@ strains:
     violation_risk: 0.3
   - name: market_shiver
     topic: economic_panic
-    memeticity: 0.4  # Reduced from 0.6 (more gradual spread)
+    memeticity: 0.55  # Increased from 0.4
     emotional_profile: {fear: 0.5, anger: 0.3, hope: 0.2}
     falsifiability: 0.6
     stealth: 0.45
@@ -140,7 +152,7 @@ strains:
     violation_risk: 0.35
   - name: temple_echo
     topic: moral_spiral
-    memeticity: 0.3  # Reduced from 0.5 (more gradual spread)
+    memeticity: 0.45  # Increased from 0.3
     emotional_profile: {fear: 0.3, anger: 0.4, hope: 0.3}
     falsifiability: 0.5
     stealth: 0.55
@@ -148,7 +160,7 @@ strains:
     violation_risk: 0.4
   - name: signal_fog
     topic: tech_conspiracy
-    memeticity: 0.38  # Reduced from 0.58 (more gradual spread)
+    memeticity: 0.52  # Increased from 0.38
     emotional_profile: {fear: 0.2, anger: 0.5, hope: 0.3}
     falsifiability: 0.65
     stealth: 0.5
@@ -156,7 +168,7 @@ strains:
     violation_risk: 0.45
   - name: border_whisper
     topic: outsider_threat
-    memeticity: 0.42  # Reduced from 0.62 (more gradual spread)
+    memeticity: 0.6  # Increased from 0.42
     emotional_profile: {fear: 0.4, anger: 0.4, hope: 0.2}
     falsifiability: 0.55
     stealth: 0.5

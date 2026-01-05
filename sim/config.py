@@ -146,13 +146,13 @@ def resolve_emotion_profile(emotion_spec: Dict[str, Any] | str) -> Dict[str, flo
 # General misinformation defaults based on research (Vosoughi et al., 2018; Roozenbeek et al., 2020)
 # Vosoughi et al. (2018): False news spreads 6x faster than true news
 GENERAL_MISINFORMATION_DEFAULTS = {
-    "memeticity": 0.25,           # Moderately shareable (further reduced for gradual spread)
-    "virality": 0.3,               # Further reduced virality (maintains ~6x ratio with truth: 0.3 / 0.05 ≈ 6x)
-    "falsifiability": 0.40,        # Hard to debunk (Lewandowsky et al., 2012)
-    "stealth": 0.55,               # Evades detection
-    "mutation_rate": 0.06,          # Moderate mutation rate
-    "violation_risk": 0.35,         # Moderate policy violations
-    "persistence": 0.25,            # Beliefs fade without reinforcement
+    "memeticity": 0.5,             # Increased from 0.25 for faster initial exposure
+    "virality": 0.6,               # Increased from 0.3 (Maintains 6x ratio with truth: 0.6 / 0.1 = 6x)
+    "falsifiability": 0.40,
+    "stealth": 0.55,
+    "mutation_rate": 0.06,
+    "violation_risk": 0.35,
+    "persistence": 0.25,
     "is_true": False
 }
 
@@ -161,13 +161,13 @@ GENERAL_MISINFORMATION_DEFAULTS = {
 # Vosoughi et al. (2018): True news spreads 6x slower than false news
 # Ratio: 1.0 / 6.0 = 0.167 (exactly 6x difference)
 TRUTH_DEFAULTS = {
-    "memeticity": 0.08,            # Spreads more deliberately (further reduced for gradual spread)
-    "virality": 0.05,              # Further reduced virality (maintains ~6x ratio: 0.3 / 0.05 = 6x)
-    "falsifiability": 1.0,          # Fully verifiable
-    "stealth": 0.0,                 # Transparent
-    "mutation_rate": 0.0,           # Doesn't mutate
-    "violation_risk": 0.0,          # No policy violations
-    "persistence": 0.75,            # High persistence once adopted
+    "memeticity": 0.1,             # Increased from 0.08
+    "virality": 0.1,               # Increased from 0.05 (Maintains 6x ratio: 0.6 / 0.1 = 6x)
+    "falsifiability": 1.0,
+    "stealth": 0.0,
+    "mutation_rate": 0.0,
+    "violation_risk": 0.0,
+    "persistence": 0.75,
     "is_true": True
 }
 
@@ -181,7 +181,7 @@ class SimConfig(BaseModel):
     seed: int | None = None
     device: Literal["cpu", "cuda", "mps", "auto"] = "cpu"
     snapshot_interval: int = 50
-    adoption_threshold: float = 0.75  # Increased from 0.7 to slow adoption and create more gradual spread
+    adoption_threshold: float = 0.7  # Lowered from 0.75 for faster adoption spikes
     deterministic: bool = True
     seed_fraction: float = 0.01
     use_tf32: bool = False
@@ -314,6 +314,8 @@ class BeliefUpdateConfig(BaseModel):
     exposure_memory_decay: float = 0.75
     belief_decay: float = 0.02
     reactance_strength: float = 0.3
+    confirmation_strength: float = 0.25  # Eq 5.2 gamma in METHODS.md
+    identity_threat_sensitivity: float = 0.2 # Eq 5.1 in METHODS.md
 
 
 class DualProcessConfig(BaseModel):
@@ -346,13 +348,28 @@ class DualProcessConfig(BaseModel):
 
     # Temporal dynamics
     familiarity_decay: float = 0.95
+    familiarity_decay: float = 0.95
     fluency_learning_rate: float = 0.1
+
+
+class SEDPNRConfig(BaseModel):
+    """Configuration for SEDPNR spread parameters from Nature paper (2024)."""
+    alpha: float = 0.1      # S -> E (Initial exposure/encounter)
+    gamma: float = 0.1      # E -> D (Exposed to Doubtful)
+    beta_pos_e: float = 0.5 # E -> P (Exposed to Positively Infected)
+    beta_neg_e: float = 0.4 # E -> N (Exposed to Negatively Infected)
+    beta_pos_d: float = 0.5 # D -> P (Doubtful to Positively Infected)
+    beta_neg_d: float = 0.6 # D -> N (Doubtful to Negatively Infected)
+    lambda_p: float = 0.01  # P -> R (Positively Infected to Restrained)
+    lambda_n: float = 0.01  # N -> R (Negatively Infected to Restrained)
+    mu_e: float = 0.05      # E -> S (Exposed back to Susceptible)
+    mu_d: float = 0.05      # D -> S (Doubtful back to Susceptible)
 
 
 class SharingConfig(BaseModel):
     model_config = ConfigDict(extra="allow")
-    base_share_rate: float = 0.015  # Base probability of sharing (further reduced for more gradual spread)
-    belief_sensitivity: float = 2.0
+    base_share_rate: float = 0.02  # Increased from 0.015 for sharper spikes
+    belief_sensitivity: float = 2.2 # Slightly increased for more sensitive sharing
     emotion_sensitivity: float = 0.5
     status_sensitivity: float = 0.5
     conformity_sensitivity: float = 0.4
@@ -447,6 +464,7 @@ class SimulationConfig(BaseModel):
     belief_update: BeliefUpdateConfig = BeliefUpdateConfig()
     sharing: SharingConfig = SharingConfig()
     dual_process: DualProcessConfig = DualProcessConfig()
+    sedpnr: SEDPNRConfig = SEDPNRConfig()
     moderation: ModerationConfig = ModerationConfig()
     strains: List[StrainConfig] = Field(default_factory=list)
     metrics: MetricsConfig = MetricsConfig()

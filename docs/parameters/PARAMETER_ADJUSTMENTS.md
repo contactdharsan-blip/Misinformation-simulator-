@@ -10,9 +10,9 @@ The literature-aligned runs showed:
 ## Current Parameter Values (Updated)
 
 ### 1. Base Share Rate ✓
-**Current Value**: 0.015 (1.5%)  
+**Current Value**: 0.012 (1.2%)  
 **File**: `sim/config.py` line 321  
-**Previous**: 0.085 (8.5%) → 0.025 (2.5%) → **0.015 (1.5%)**
+**Previous**: 0.085 (8.5%) → 0.025 (2.5%) → 0.015 (1.5%) → **0.012 (1.2%)**
 
 **Instructions for Adjustment**:
 ```python
@@ -69,9 +69,9 @@ TRUTH_DEFAULTS = {
 **Rationale**: Lower memeticity = less shareable = slower spread. This helps create more realistic adoption curves.
 
 ### 4. Adoption Threshold ✓
-**Current Value**: 0.75 (75%)  
+**Current Value**: 0.8 (80%)  
 **File**: `sim/config.py` line 184  
-**Previous**: 0.7 (70%)
+**Previous**: 0.70 (70%) → 0.75 (75%) → **0.8 (80%)**
 
 **Instructions for Adjustment**:
 ```python
@@ -119,7 +119,14 @@ decay_rate = 0.92  # Adjust this (0.85-0.95 recommended)
 
 **Implementation**: 
 - Agents become **Restrained** after 3 shares per claim.
-- Share probability is reduced by 90% (multiplied by 0.1) once restrained.
+- Transition is governed by SEDPNR $\lambda$ parameters (P/N -> R).
+
+### 8. SEDPNR Transition Rates ✓
+**Current Values** (Nature 2024 Calibrated):
+- **alpha (S->E)**: 0.1 (Exposure susceptibility)
+- **gamma (E->D)**: 0.1 (Doubt trigger probability)
+- **beta_pos (E/D->P)**: 0.5 (Positive infection from state)
+- **mu (E/D->S)**: 0.05 (Recovery/Correction)
 
 After these changes:
 - **Spread pattern**: Gradual S-curve over 14-28 days (not 6-9 days)

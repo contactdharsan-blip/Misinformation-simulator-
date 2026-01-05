@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple
 
 import torch
 
-from sim.config import SharingConfig, WorldConfig
+from sim.config import SharingConfig, WorldConfig, SEDPNRConfig
 from sim.disease.strains import Strain
 
 
@@ -15,6 +15,9 @@ def compute_share_probabilities(
     sharing_cfg: SharingConfig,
     world_cfg: WorldConfig,
     strains: List[Strain],
+    sedpnr_cfg: SEDPNRConfig,
+    exposed_mask: torch.Tensor,
+    doubtful_mask: torch.Tensor,
     ages: torch.Tensor | None = None,
 ) -> Tuple[torch.Tensor, torch.Tensor]:
     """Compute per-agent share probabilities for each claim.
@@ -81,8 +84,28 @@ def compute_share_probabilities(
     # Apply per-strain virality multiplier
     virality = torch.tensor([s.virality for s in strains], device=beliefs.device, dtype=beliefs.dtype)
     probs_pos = probs_pos * virality.unsqueeze(0)
-    # Negative sharing is less sensitive to virality but still influenced
     probs_neg = probs_neg * (0.5 + 0.5 * virality.unsqueeze(0))
+    
+    # SEDPNR Beta Scaling (Transitions E -> P/N and D -> P/N)
+    # Only Exposed or Doubtful agents share
+    # beta_pos_e, beta_neg_e for Exposed
+    # beta_pos_d, beta_neg_d for Doubtful
+    
+    # Initialize combined beta masks
+    beta_pos = torch.zeros_like(probs_pos)
+    beta_neg = torch.zeros_like(probs_neg)
+    
+    # Exposed agents
+    beta_pos = torch.where(exposed_mask, sedpnr_cfg.beta_pos_e, beta_pos)
+    beta_neg = torch.where(exposed_mask, sedpnr_cfg.beta_neg_e, beta_neg)
+    
+    # Doubtful agents (Doubtful mask overrides Exposed mask as it's a more specific state)
+    beta_pos = torch.where(doubtful_mask, sedpnr_cfg.beta_pos_d, beta_pos)
+    beta_neg = torch.where(doubtful_mask, sedpnr_cfg.beta_neg_d, beta_neg)
+    
+    # Apply beta scaling
+    probs_pos = probs_pos * beta_pos
+    probs_neg = probs_neg * beta_neg
     
     return torch.clamp(probs_pos, 0.0, 1.0), torch.clamp(probs_neg, 0.0, 1.0)
 

@@ -222,47 +222,79 @@ def generate_media_diet(
     rng: np.random.Generator,
     n_agents: int,
     env: Dict[str, Any] | None = None,
+    ages: np.ndarray | None = None,
+    ethnicity: np.ndarray | None = None,
 ) -> MediaDiet:
-    """Generate per-agent media channel weights. If `env` is provided use rough averages from it.
-
-    The function is intentionally simple: when a `media_environment` dict is provided
-    (as in the Phoenix example), we build channels from available social platforms and
-    local outlets and sample per-agent preferences from a Dirichlet with concentration
-    parameters derived from average usage/reach values.
+    """Generate per-agent media channel weights with demographic biases.
+    
+    Biases (Pew Research findings):
+    - Young (18-34): High TikTok/Instagram, low TV/Local News.
+    - Seniors (65+): High TV/Local News, low TikTok.
+    - Ethnicity: Specific platforms over-index in certain communities (e.g., WhatsApp in Hispanic/Latino).
     """
     if env and isinstance(env, dict):
-        channels = []
-        alphas = []
+        base_channels = []
+        base_alphas = []
 
         # local outlets
         local = env.get("local_outlets")
         if local:
-            channels.append("local_news")
-            # average reach across outlets -> modest alpha
+            base_channels.append("local_news")
             avg_reach = float(
                 sum([sum(o.get("reach_by_group", {}).values()) / max(1, len(o.get("reach_by_group", {}))) for o in local]) / max(1, len(local))
             )
-            alphas.append(max(0.2, avg_reach * 5.0))
+            base_alphas.append(max(0.2, avg_reach * 5.0))
 
         # common social platforms
         social = env.get("social_media_penetration") or {}
         for plat in ("facebook", "instagram", "tiktok", "whatsapp"):
             usage = social.get(plat)
             if usage and isinstance(usage, dict):
-                # average across groups
                 avg = float(sum(usage.get("usage_by_group", {}).values()) / max(1, len(usage.get("usage_by_group", {})))) if isinstance(usage.get("usage_by_group"), dict) else 0.2
-                channels.append(plat)
-                alphas.append(max(0.2, avg * 5.0))
+                base_channels.append(plat)
+                base_alphas.append(max(0.2, avg * 5.0))
 
-        if not channels:
-            channels = ["local_social", "national_social", "tv", "local_news", "church"]
-            weights = rng.dirichlet([1.5, 1.2, 1.0, 1.3, 0.9], size=n_agents).astype(np.float32)
-            return MediaDiet(channels=channels, weights=weights)
+        if not base_channels:
+            base_channels = ["local_social", "national_social", "tv", "local_news", "church"]
+            base_alphas = [1.5, 1.2, 1.0, 1.3, 0.9]
 
-        # sample per-agent weights from Dirichlet with small jitter
-        alphas = [a + 0.5 for a in alphas]
-        weights = rng.dirichlet(alphas, size=n_agents).astype(np.float32)
-        return MediaDiet(channels=channels, weights=weights)
+        weights = np.zeros((n_agents, len(base_channels)), dtype=np.float32)
+        
+        # Apply demographic biases
+        for i in range(n_agents):
+            agent_alphas = list(base_alphas)
+            
+            # Age Bias
+            if ages is not None:
+                age = ages[i]
+                if age < 35:
+                    # Youth: +TikTok, +Instagram, -TV, -Local News
+                    for idx, ch in enumerate(base_channels):
+                        if ch in ("tiktok", "instagram"): agent_alphas[idx] *= 2.0
+                        if ch in ("tv", "local_news"): agent_alphas[idx] *= 0.5
+                elif age >= 65:
+                    # Seniors: +TV, +Local News, --TikTok, -Instagram
+                    for idx, ch in enumerate(base_channels):
+                        if ch in ("tv", "local_news"): agent_alphas[idx] *= 2.0
+                        if ch in ("tiktok"): agent_alphas[idx] *= 0.1
+                        if ch in ("instagram"): agent_alphas[idx] *= 0.4
+            
+            # Ethnicity Bias (Subtle community penetration shifts)
+            if ethnicity is not None:
+                eth = ethnicity[i]
+                if eth == 'hispanic':
+                    # WhatsApp often over-indexes in Hispanic communities (connectivity to international fam)
+                    for idx, ch in enumerate(base_channels):
+                        if ch == "whatsapp": agent_alphas[idx] *= 1.5
+                elif eth == 'black':
+                    # High social media engagement for news
+                    for idx, ch in enumerate(base_channels):
+                        if ch in ("facebook", "tiktok"): agent_alphas[idx] *= 1.3
+            
+            # Stochasticity: unique diet for every agent
+            weights[i] = rng.dirichlet([a + 0.1 for a in agent_alphas])
+            
+        return MediaDiet(channels=base_channels, weights=weights)
 
     # fallback default
     channels = ["local_social", "national_social", "tv", "local_news", "church"]

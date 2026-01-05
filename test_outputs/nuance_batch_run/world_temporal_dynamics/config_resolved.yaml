@@ -129,6 +129,8 @@ belief_update:
   exposure_memory_decay: 0.7
   belief_decay: 0.012
   reactance_strength: 0.3
+  confirmation_strength: 0.25
+  identity_threat_sensitivity: 0.2
 sharing:
   base_share_rate: 0.014
   belief_sensitivity: 2.1
@@ -155,13 +157,24 @@ dual_process:
   conflict_detection_threshold: 0.3
   familiarity_decay: 0.95
   fluency_learning_rate: 0.1
+sedpnr:
+  alpha: 0.1
+  gamma: 0.1
+  beta_pos_e: 0.5
+  beta_neg_e: 0.4
+  beta_pos_d: 0.5
+  beta_neg_d: 0.6
+  lambda_p: 0.01
+  lambda_n: 0.01
+  mu_e: 0.05
+  mu_d: 0.05
 moderation:
   warning_effect: 0.35
   downrank_effect: 0.4
 strains:
 - name: silver_river
   topic: health_rumor
-  memeticity: 0.35
+  memeticity: 0.5
   emotional_profile:
     fear: 0.6
     anger: 0.2
@@ -171,11 +184,11 @@ strains:
   mutation_rate: 0.05
   violation_risk: 0.3
   is_true: false
-  virality: 0.3
+  virality: 0.6
   persistence: 0.25
 - name: market_shiver
   topic: economic_panic
-  memeticity: 0.4
+  memeticity: 0.55
   emotional_profile:
     fear: 0.5
     anger: 0.3
@@ -185,11 +198,11 @@ strains:
   mutation_rate: 0.04
   violation_risk: 0.35
   is_true: false
-  virality: 0.3
+  virality: 0.6
   persistence: 0.25
 - name: temple_echo
   topic: moral_spiral
-  memeticity: 0.3
+  memeticity: 0.45
   emotional_profile:
     fear: 0.3
     anger: 0.4
@@ -199,11 +212,11 @@ strains:
   mutation_rate: 0.06
   violation_risk: 0.4
   is_true: false
-  virality: 0.3
+  virality: 0.6
   persistence: 0.25
 - name: signal_fog
   topic: tech_conspiracy
-  memeticity: 0.38
+  memeticity: 0.52
   emotional_profile:
     fear: 0.2
     anger: 0.5
@@ -213,11 +226,11 @@ strains:
   mutation_rate: 0.05
   violation_risk: 0.45
   is_true: false
-  virality: 0.3
+  virality: 0.6
   persistence: 0.25
 - name: border_whisper
   topic: outsider_threat
-  memeticity: 0.42
+  memeticity: 0.6
   emotional_profile:
     fear: 0.4
     anger: 0.4
@@ -227,7 +240,7 @@ strains:
   mutation_rate: 0.04
   violation_risk: 0.5
   is_true: false
-  virality: 0.3
+  virality: 0.6
   persistence: 0.25
 metrics:
   community_backend: auto

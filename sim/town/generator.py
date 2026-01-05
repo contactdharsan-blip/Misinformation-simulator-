@@ -233,7 +233,7 @@ def generate_town(
     )
     # Allow world-level media environment to influence media diet if provided
     media_env = getattr(world_cfg, "media_environment", None)
-    media_diet = generate_media_diet(rng, n_agents, media_env)
+    media_diet = generate_media_diet(rng, n_agents, media_env, ages=ages, ethnicity=ethnicity)
     ideology = ideology_proxy(traits, trust)
 
     networks, aggregate_edges, neighbor_weight_sum = build_networks(

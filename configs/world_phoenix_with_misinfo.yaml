@@ -9,7 +9,7 @@ sim:
   device: auto
   deterministic: true
   seed_fraction: 0.001
-  adoption_threshold: 0.8
+  adoption_threshold: 0.7
 
 # Override strains to include both truth and misinformation
 strains:

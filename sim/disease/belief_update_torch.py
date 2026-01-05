@@ -22,25 +22,49 @@ def update_beliefs(
     reactance: torch.Tensor,
     strains: list | None = None,
     cultural_match: torch.Tensor | None = None,
+    processing_mode: torch.Tensor | None = None, # High = System 1 (Intuitive)
 ) -> Tuple[torch.Tensor, torch.Tensor]:
-    """Vectorized belief update with decay, repetition, and corrections."""
+    """Vectorized belief update with formal Dual-Process and Confirmation Bias logic."""
     exposure_memory = cfg.exposure_memory_decay * exposure_memory + (1 - cfg.exposure_memory_decay) * exposure
 
-    p = torch.sigmoid(
+    # System 1: Heuristic/Emotional (Eq 3.2 approximation)
+    s1_acceptance = torch.sigmoid(
         cfg.alpha * exposure_memory
         + cfg.beta * trust_signal
         + cfg.gamma * match
-        + cfg.delta * social_proof
-        - cfg.lambda_skepticism * skepticism.unsqueeze(1)
-        - cfg.mu_debunk * debunk_pressure
         + (cultural_match if cultural_match is not None else 0.0)
     )
+
+    # System 2: Analytical/Evidence (Eq 3.3 approximation)
+    s2_acceptance = torch.sigmoid(
+        0.5 * trust_signal # Evidence quality proxy
+        - cfg.lambda_skepticism * skepticism.unsqueeze(1)
+        - cfg.mu_debunk * debunk_pressure
+    )
+
+    # Dual-Process Integration (Eq 3.1)
+    # processing_mode (alpha in paper) = 0 for pure S2, 1 for pure S1
+    if processing_mode is not None:
+        p = (processing_mode * s1_acceptance) + ((1 - processing_mode) * s2_acceptance)
+    else:
+        # Fallback to standard weighted sum if mode not provided
+        p = (0.6 * s1_acceptance) + (0.4 * s2_acceptance)
+
+    # Confirmation Bias (Eq 5.2)
+    # gamma * sign(beliefs - 0.5)
+    confirmation_multiplier = 1.0 + cfg.confirmation_strength * torch.sign(beliefs - 0.5)
+    p = p * confirmation_multiplier
+
+    # Social Proof (Eq 4.2 integration: Acceptance + beta * social_proof)
+    # Using delta as social proof weight beta from paper
+    acceptance = p + cfg.delta * social_proof
 
     correction = debunk_pressure
     if reactance_enabled:
         correction = correction * (1 - cfg.reactance_strength * reactance.unsqueeze(1))
 
-    beliefs = beliefs + cfg.eta * p * (1 - beliefs) - cfg.rho * correction
+    # Eta (learning rate) and Rho (correction effectiveness) from Table 7
+    beliefs = beliefs + cfg.eta * acceptance * (1 - beliefs) - cfg.rho * correction
     # Apply per-strain persistence-adjusted decay if strains provided,
     # otherwise fall back to global decay.
     if strains is not None:

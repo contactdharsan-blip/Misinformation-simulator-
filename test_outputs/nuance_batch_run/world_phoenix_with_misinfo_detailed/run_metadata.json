@@ -10,7 +10,7 @@
   "pyarrow_version": "22.0.0",
   "streamlit_version": "unknown",
   "sim_version": "unknown",
-  "git_commit": "a5cbcfff57bb093bb9ad52ffc593d0cdbe79d31e",
+  "git_commit": "4a92174829004cbcebe0a0a70fe9a5a0b12da6fa",
   "seed": "42",
   "deterministic": "True"
 }

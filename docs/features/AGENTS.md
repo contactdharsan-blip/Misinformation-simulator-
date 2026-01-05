@@ -34,5 +34,11 @@ Sharing is no longer a binary action. Agents can share via two distinct channels
 ## 4. Cultural & Demographic Nuance
 
 - **Identity-Protective Cognition**: Agents are more susceptible to claims that align with their cultural group.
+- **Biased Media Diets**: Media consumption is biased by age (Youth: TikTok/Instagram, Seniors: TV/News) and ethnicity (Community-specific penetration, e.g., WhatsApp).
 - **Age Multipliers**: Older adults (65+) share misinformation significantly more frequently (up to 7x) than younger adults.
 - **Skepticism & Numeracy**: Traits that modulate the weight of System 2 thinking.
+
+## 5. Spread Logic
+
+- **Social Cascades**: Information spread is driven by social ties. Initially seeded agents are marked as "Exposed" to initiate the cascade.
+- **Engagement Fatigue**: To prevent infinite loops, agents hit a "Restrained" state after repeated sharing, realistically modeling information saturation.

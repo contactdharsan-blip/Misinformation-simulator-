@@ -1,6 +1,0 @@
-{
-  "initial_strains": [
-    "official_health_guidance"
-  ],
-  "note": "Mutations create new strains but are not tracked as separate claims due to fixed tensor size"
-}

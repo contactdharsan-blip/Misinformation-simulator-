@@ -141,15 +141,23 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         device=device,
     )
     seed_frac = cfg.sim.seed_fraction
+    all_seeds = []
     for k in range(n_claims):
         seeds = rng_manager.numpy.choice(n_agents, size=max(1, int(seed_frac * n_agents)), replace=False)
         beliefs[seeds, k] = 0.85
+        all_seeds.append(seeds)
 
     baseline = torch.full_like(beliefs, fill_value=cfg.belief_update.baseline_belief)
     exposure_memory = torch.zeros_like(beliefs)
     
-    # Track sharing fatigue (Restrained state in SEDPNR)
-    # Shape: (n_agents, n_claims), counts total shares per claim
+    # Track SEDPNR states
+    # E (Exposed): Individuals who met the trending misinformation
+    exposed_mask = torch.zeros_like(beliefs, dtype=torch.bool)
+    for k, seeds in enumerate(all_seeds):
+        exposed_mask[seeds, k] = True
+        
+    # D (Doubtful): In cog_state.is_doubtful
+    # R (Restrained): Individuals who lost interest in spreading
     share_count = torch.zeros_like(beliefs)
     restrained_mask = torch.zeros_like(beliefs, dtype=torch.bool)
     
@@ -257,7 +265,8 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         restrained_penalty = torch.where(restrained_mask, 0.1, 1.0)
         
         share_probs_pos, share_probs_neg = compute_share_probabilities(
-            beliefs, traits, emotions, cfg.sharing, world_effective, strains, ages=ages_tensor
+            beliefs, traits, emotions, cfg.sharing, world_effective, strains, 
+            sedpnr_cfg=cfg.sedpnr, exposed_mask=exposed_mask, doubtful_mask=cog_state.is_doubtful, ages=ages_tensor
         )
         share_probs_pos = share_probs_pos * restrained_penalty
         # Negative sharing also fatigues but perhaps slower
@@ -273,10 +282,15 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         # Total shares for exposure calculation
         shares = shares_pos + shares_neg
         
-        # Update share counts and restrained state (positive shares drive fatigue more)
+        # Update share counts and restrained state (SEDPNR lambda transition)
         share_count = share_count + shares_pos + 0.5 * shares_neg
-        # Agents become 'Restrained' after sharing a claim more than 3 times (SEDPNR nuance)
-        restrained_mask = share_count >= 3
+        
+        # P/N -> R (lambda_p, lambda_n): Probabilistic transition to Restrained state
+        lambda_p_mask = (shares_pos > 0.5) & (~restrained_mask) & (torch.rand(restrained_mask.shape, device=device) < cfg.sedpnr.lambda_p)
+        lambda_n_mask = (shares_neg > 0.5) & (~restrained_mask) & (torch.rand(restrained_mask.shape, device=device) < cfg.sedpnr.lambda_n)
+        
+        # Agents become 'Restrained' either via lambda probability or threshold fatigue
+        restrained_mask = restrained_mask | (share_count >= 3.0) | lambda_p_mask | lambda_n_mask
 
         social_exposure = compute_social_exposure(shares, edge_tensors, n_agents)
         social_proof = compute_social_proof(
@@ -289,6 +303,26 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
         feed_exposure = feed_injection(media_diet, strains, world_effective)
 
         total_exposure = social_exposure + institution_exposure + feed_exposure
+        
+        # Transition S -> E (alpha): Only some people with exposure actually enter 'Exposed' state
+        # In SEDPNR, this represents individuals who 'met' the misinformation but didn't critically assess it
+        new_exposure = (total_exposure > 1e-4) & (~exposed_mask) & (~restrained_mask)
+        if new_exposure.any():
+            alpha_mask = torch.rand(new_exposure.shape, device=device) < cfg.sedpnr.alpha
+            exposed_mask = exposed_mask | (new_exposure & alpha_mask)
+
+        # Transition E -> D (gamma): Exposed individuals move to Doubtful state
+        e_to_d_mask = exposed_mask & (~cog_state.is_doubtful) & (torch.rand(exposed_mask.shape, device=device) < cfg.sedpnr.gamma)
+        cog_state.is_doubtful = cog_state.is_doubtful | e_to_d_mask
+
+        # Recovery Transitions (mu_e, mu_d): Returning to Susceptible state
+        # This occurs due to interest loss or fact-checking reinforcement
+        mu_e_mask = exposed_mask & (torch.rand(exposed_mask.shape, device=device) < cfg.sedpnr.mu_e)
+        exposed_mask = exposed_mask & (~mu_e_mask)
+        
+        mu_d_mask = cog_state.is_doubtful & (torch.rand(exposed_mask.shape, device=device) < cfg.sedpnr.mu_d)
+        cog_state.is_doubtful = cog_state.is_doubtful & (~mu_d_mask)
+
         total_exposure = operator.apply(total_exposure)
 
         inst_trust = (
@@ -341,6 +375,7 @@ def run_simulation(cfg: SimulationConfig, out_dir: str | Path) -> SimulationOutp
             traits["conflict_tolerance"],
             strains,
             cultural_match,
+            processing_mode=processing_mode,
         )
         
         # Track agents who have adopted truth (belief >= threshold)

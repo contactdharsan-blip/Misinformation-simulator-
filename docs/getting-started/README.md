@@ -6,9 +6,10 @@ A cognitively-grounded agent-based model for studying how misinformation spreads
 
 ### Cognitive Architecture
 - **Dual-Process Theory** (Kahneman, 2011): System 1 (fast/intuitive) and System 2 (slow/analytical) processing
+- **SEDPNR Model**: Susceptible-Exposed-Doubtful-Positively Infected-Negatively Infected-Restrained transitions
 - **Motivated Reasoning**: Identity-protective cognition with confirmation bias and psychological reactance
+- **Demographic Bias**: Realistic age and ethnicity-based media consumption patterns
 - **Attention Economics**: Bounded rationality with finite cognitive resources
-- **Source Memory**: Credibility tracking and sleeper effects
 
 ### Social Network Modeling
 - **Multi-layer Networks**: Family, workplace, school, church, and neighborhood ties
@@ -415,11 +416,13 @@ mypy sim
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| Base learning rate | 0.15 | Controls adoption speed |
-| Social proof weight | 0.22 | Influence of peer beliefs |
-| Skepticism dampening | 0.40 | Individual resistance |
-| Decay rate | 0.008 | Belief fade over time |
-| Adoption threshold | 0.70 | Belief level for "adoption" |
+| Base learning rate | 0.25 | Controls adoption speed |
+| Social proof threshold | 0.55 | Influence of peer beliefs |
+| Skepticism dampening | 0.70 | Individual resistance |
+| Decay rate | 0.015 | Belief fade over time |
+| Adoption threshold | 0.80 | Belief level for "adoption" |
+| **SEDPNR alpha** | 0.1 | S -> E (Exposure rate) |
+| **SEDPNR gamma** | 0.1 | E -> D (Doubt trigger rate) |
 
 ## Theoretical Foundations
 
